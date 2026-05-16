@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TFG_APPBusinessIntelligence.Views.Inicio"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#0F1A2E">
+    <Grid RowDefinitions="*" ColumnDefinitions="*" Padding="20,50,20,20">
+        <!-- Degradado de fondo -->
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#1B2A4E" Offset="0.0"/>
+                <GradientStop Color="#0D1B3E" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <VerticalStackLayout Spacing="30" 
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center">
+
+            <!-- Logo redondo centrado - Tap para ir a Login -->
+            <Frame CornerRadius="100"
+               HasShadow="True"
+               Padding="0"
+               HorizontalOptions="Center"
+               WidthRequest="200"
+               HeightRequest="200">
+                <Image Source="logoapp.png" 
+                   Aspect="AspectFill"
+                   HorizontalOptions="Fill"
+                   VerticalOptions="Fill">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnLogoTapped"/>
+                    </Image.GestureRecognizers>
+                </Image>
+            </Frame>
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TFG_APPBusinessIntelligence.Views.Login"
+             Shell.NavBarIsVisible="False">
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#1E3A8A" Offset="0.0" />
+            <GradientStop Color="#0F172A" Offset="1.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="30" 
+                        Padding="30" 
+                        VerticalOptions="Center" 
+                        HorizontalOptions="Fill">
+
+            <!-- Logo sin circulo de fondo -->
+            <Image Source="logoapp.png" 
+               WidthRequest="140" 
+               HeightRequest="140" 
+               Aspect="AspectFit"
+               HorizontalOptions="Center" 
+               VerticalOptions="Center" />
+
+
+            <!-- Botón "Iniciar sesión" -->
+            <Button x:Name="IniciarSesionButton"
+                Text="Iniciar sesión"
+                BackgroundColor="#3B82F6"
+                TextColor="White"
+                FontSize="16"
+                FontAttributes="Bold"
+                CornerRadius="10"
+                HeightRequest="45"
+                Padding="0"
+                Margin="0,10,0,0"
+                HorizontalOptions="Fill"
+                Clicked="OnIniciarSesionClicked" />
+
+            <!-- Texto "¿No tienes cuenta? Regístrate" -->
+            <HorizontalStackLayout Spacing="5" HorizontalOptions="Center" VerticalOptions="Center">
+                <Label Text="¿No tienes cuenta?" 
+                   FontSize="14"
+                   TextColor="#93C5FD" />
+                <Label Text="Regístrate"
+                   FontSize="14"
+                   TextColor="Red"
+                   FontAttributes="Bold"
+                   TextDecorations="Underline">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnRegistroTapped"/>
+                    </Label.GestureRecognizers>
+                </Label>
+            </HorizontalStackLayout>
+
+            <!-- Botón "Probar Demo" con borde -->
+            <Button Text="Probar Demo"
+                BackgroundColor="Transparent"
+                TextColor="#93C5FD"
+                FontSize="16"
+                FontAttributes="Bold"
+                CornerRadius="10"
+                HeightRequest="45"
+                Padding="0"
+                BorderColor="#93C5FD"
+                BorderWidth="2"
+                HorizontalOptions="Fill" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

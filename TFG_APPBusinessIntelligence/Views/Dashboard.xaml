@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TFG_APPBusinessIntelligence.Views.Dashboard"
+             Shell.NavBarIsVisible="False"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#2C5F8D" Offset="0.0" />
+            <GradientStop Color="#1E3A5F" Offset="1.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <Grid Padding="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Barra superior con iconos -->
+        <Grid Grid.Row="0" Margin="0,20,0,40">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Icono de configuración (izquierda) -->
+            <HorizontalStackLayout Grid.Column="0" Spacing="10">
+                <Label Text="⚙" 
+                       FontSize="28" 
+                       TextColor="White"
+                       VerticalOptions="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnConfiguracionTapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label Text="⚙" 
+                       FontSize="24" 
+                       TextColor="White"
+                       VerticalOptions="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnConfiguracionTapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </HorizontalStackLayout>
+
+            <!-- Icono de salir (derecha) -->
+            <Label Grid.Column="1"
+                   Text="🚪"
+                   FontSize="32"
+                   TextColor="White"
+                   VerticalOptions="Center">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnSalirTapped" />
+                </Label.GestureRecognizers>
+            </Label>
+        </Grid>
+
+        <!-- Contenido central -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Spacing="20"
+                                VerticalOptions="Center"
+                                HorizontalOptions="Fill"
+                                Padding="0,10,0,20">
+
+                <!-- Titulo de bienvenida -->
+                <Label Text="Bienvenido a&#x0a;ANALYSTIX" 
+                       FontSize="28" 
+                       FontAttributes="Bold" 
+                       TextColor="White"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"
+                       LineBreakMode="WordWrap"/>
+
+                <!-- Subtitulo -->
+                <Label Text="Introduce los datos que&#x0a;quieras ver&#x0a;detalladamente" 
+                       FontSize="16" 
+                       TextColor="White"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"
+                       LineBreakMode="WordWrap"
+                       Margin="0,0,0,10"/>
+
+                <!-- Icono de carpeta con lupa -->
+                <Grid WidthRequest="180" 
+                      HeightRequest="180"
+                      HorizontalOptions="Center"
+                      Margin="0,10,0,10">
+
+                    <!-- Carpeta -->
+                    <Frame BackgroundColor="#34558B"
+                           BorderColor="#4A6FA5"
+                           CornerRadius="10"
+                           Padding="15"
+                           HasShadow="True"
+                           WidthRequest="160"
+                           HeightRequest="120"
+                           VerticalOptions="Start"
+                           HorizontalOptions="Center">
+                        <Label Text="📁" 
+                               FontSize="50" 
+                               TextColor="#5A7FA5"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"/>
+                    </Frame>
+
+                    <!-- Lupa con signo + -->
+                    <Frame BackgroundColor="#E74C3C"
+                           BorderColor="#C0392B"
+                           CornerRadius="35"
+                           Padding="0"
+                           HasShadow="True"
+                           WidthRequest="70"
+                           HeightRequest="70"
+                           VerticalOptions="End"
+                           HorizontalOptions="End"
+                           Margin="0,0,15,0">
+                        <Grid>
+                            <Label Text="🔍" 
+                                   FontSize="30" 
+                                   TextColor="White"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   Margin="0,0,5,5"/>
+                            <Label Text="+" 
+                                   FontSize="25" 
+                                   FontAttributes="Bold"
+                                   TextColor="White"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   Margin="12,12,0,0"/>
+                        </Grid>
+                    </Frame>
+                </Grid>
+
+                <!-- Mensaje inferior -->
+                <Label Text="¡Ya tienes datos, revisalos!" 
+                       FontSize="15" 
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"
+                       Margin="0,10,0,0"/>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Boton Ver datos -->
+        <Button Grid.Row="2"
+                Text="Ver datos" 
+                BackgroundColor="#4A6FA5" 
+                TextColor="White" 
+                FontSize="16"
+                FontAttributes="Bold"
+                CornerRadius="8"
+                WidthRequest="150"
+                HeightRequest="45"
+                HorizontalOptions="Center"
+                Margin="0,0,0,30"
+                Clicked="OnVerDatosClicked"/>
+
+    </Grid>
+
+</ContentPage>

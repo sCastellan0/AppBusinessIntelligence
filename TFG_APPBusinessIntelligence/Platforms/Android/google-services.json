@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "251158382836",
+    "project_id": "tfg-businessintelligence",
+    "storage_bucket": "tfg-businessintelligence.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:251158382836:android:3dcde8865b877596fbb6a1",
+        "android_client_info": {
+          "package_name": "com.companyname.tfg_appbusinessintelligence"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcK4BTS7p0pJnOylwE_zbiauuJCDU28ME"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
