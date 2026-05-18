@@ -24,6 +24,7 @@ namespace TFG_APPBusinessIntelligence
             builder.Services.AddSingleton<AuthService>();
             builder.Services.AddSingleton<FirebaseAuthService>();
             builder.Services.AddSingleton<TotpService>();
+            builder.Services.AddSingleton<InactivityService>();
 
             // Registrar páginas
             builder.Services.AddTransient<InicioSesion>();

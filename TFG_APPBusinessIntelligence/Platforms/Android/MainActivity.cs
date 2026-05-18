@@ -3,6 +3,7 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Views;
 using AndroidX.Core.View;
+using TFG_APPBusinessIntelligence.Services;
 
 namespace TFG_APPBusinessIntelligence
 {
@@ -37,6 +38,13 @@ namespace TFG_APPBusinessIntelligence
                     Window.DecorView.SystemUiVisibility = (StatusBarVisibility)flags;
                 }
             }
+        }
+
+        public override bool DispatchTouchEvent(MotionEvent? ev)
+        {
+            var inactivityService = IPlatformApplication.Current?.Services.GetService<InactivityService>();
+            inactivityService?.ReiniciarTemporizador();
+            return base.DispatchTouchEvent(ev);
         }
     }
 }
