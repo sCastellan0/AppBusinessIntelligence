@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TFG_APPBusinessIntelligence.Views.Verificacion2FA"
+             Shell.NavBarIsVisible="False">
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#1E3A8A" Offset="0.0" />
+            <GradientStop Color="#0F172A" Offset="1.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <VerticalStackLayout Spacing="20"
+                         Padding="30"
+                         VerticalOptions="Center"
+                         HorizontalOptions="Fill">
+
+        <!-- Icono -->
+        <Label Text="🔐"
+               FontSize="56"
+               HorizontalOptions="Center" />
+
+        <!-- Título -->
+        <Label Text="Verificación en dos pasos"
+               FontSize="24"
+               FontAttributes="Bold"
+               TextColor="White"
+               HorizontalOptions="Center"
+               HorizontalTextAlignment="Center"
+               Margin="0,0,0,5"/>
+
+        <!-- Descripción -->
+        <Label Text="Introduce el código de 6 dígitos de tu app autenticadora."
+               FontSize="14"
+               TextColor="#BDC3C7"
+               HorizontalOptions="Center"
+               HorizontalTextAlignment="Center"
+               Margin="0,0,0,20"/>
+
+        <!-- Campo código -->
+        <Frame BackgroundColor="White"
+               BorderColor="#BDC3C7"
+               CornerRadius="5"
+               Padding="0"
+               HasShadow="False">
+            <Entry x:Name="CodigoEntry"
+                   Placeholder="Código de 6 dígitos"
+                   PlaceholderColor="#BDC3C7"
+                   FontSize="22"
+                   FontAttributes="Bold"
+                   BackgroundColor="Transparent"
+                   TextColor="#2C3E50"
+                   HorizontalTextAlignment="Center"
+                   Margin="12,8"
+                   Keyboard="Numeric"
+                   MaxLength="6"/>
+        </Frame>
+
+        <!-- Botones -->
+        <HorizontalStackLayout Spacing="10"
+                               HorizontalOptions="Center"
+                               Margin="0,20,0,0">
+            <Button Text="Cancelar"
+                    BackgroundColor="#95A5A6"
+                    TextColor="White"
+                    FontSize="14"
+                    CornerRadius="5"
+                    WidthRequest="130"
+                    Clicked="OnCancelarClicked"/>
+
+            <Button Text="Verificar"
+                    BackgroundColor="#3498DB"
+                    TextColor="White"
+                    FontSize="14"
+                    FontAttributes="Bold"
+                    CornerRadius="5"
+                    WidthRequest="130"
+                    Clicked="OnVerificarClicked"/>
+        </HorizontalStackLayout>
+
+    </VerticalStackLayout>
+</ContentPage>

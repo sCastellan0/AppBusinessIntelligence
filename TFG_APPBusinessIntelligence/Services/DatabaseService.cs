@@ -42,6 +42,14 @@ namespace TFG_APPBusinessIntelligence.Services
                 .FirstOrDefaultAsync();
         }
 
+        public async Task<Usuario?> GetUsuarioByCorreoAsync(string correo)
+        {
+            await InitAsync();
+            return await _database!.Table<Usuario>()
+                .Where(u => u.Correo == correo)
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<int> SaveUsuarioAsync(Usuario usuario)
         {
             await InitAsync();

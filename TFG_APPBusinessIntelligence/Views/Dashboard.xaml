@@ -6,8 +6,8 @@
              NavigationPage.HasNavigationBar="False">
     <ContentPage.Background>
         <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-            <GradientStop Color="#2C5F8D" Offset="0.0" />
-            <GradientStop Color="#1E3A5F" Offset="1.0" />
+            <GradientStop Color="#1E3A8A" Offset="0.0" />
+            <GradientStop Color="#0F172A" Offset="1.0" />
         </LinearGradientBrush>
     </ContentPage.Background>
 
@@ -17,7 +17,6 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-
         <!-- Barra superior con iconos -->
         <Grid Grid.Row="0" Margin="0,20,0,40">
             <Grid.ColumnDefinitions>
@@ -27,16 +26,8 @@
 
             <!-- Icono de configuración (izquierda) -->
             <HorizontalStackLayout Grid.Column="0" Spacing="10">
-                <Label Text="⚙" 
-                       FontSize="28" 
-                       TextColor="White"
-                       VerticalOptions="Center">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnConfiguracionTapped" />
-                    </Label.GestureRecognizers>
-                </Label>
-                <Label Text="⚙" 
-                       FontSize="24" 
+                <Label Text="⚙"
+                       FontSize="30"
                        TextColor="White"
                        VerticalOptions="Center">
                     <Label.GestureRecognizers>
@@ -46,15 +37,15 @@
             </HorizontalStackLayout>
 
             <!-- Icono de salir (derecha) -->
-            <Label Grid.Column="1"
-                   Text="🚪"
-                   FontSize="32"
-                   TextColor="White"
+            <Image Grid.Column="1"
+                   Source="logout_icon.svg"
+                   WidthRequest="32"
+                   HeightRequest="32"
                    VerticalOptions="Center">
-                <Label.GestureRecognizers>
+                <Image.GestureRecognizers>
                     <TapGestureRecognizer Tapped="OnSalirTapped" />
-                </Label.GestureRecognizers>
-            </Label>
+                </Image.GestureRecognizers>
+            </Image>
         </Grid>
 
         <!-- Contenido central -->
@@ -159,6 +150,83 @@
                 HorizontalOptions="Center"
                 Margin="0,0,0,30"
                 Clicked="OnVerDatosClicked"/>
+
+        <!-- Panel de confirmación cerrar sesión -->
+        <Border x:Name="PanelSalir"
+                Grid.RowSpan="3"
+                IsVisible="False"
+                StrokeShape="RoundRectangle 20,20,0,0"
+                Stroke="Transparent"
+                StrokeThickness="0"
+                Padding="28,24,28,36"
+                VerticalOptions="End"
+                TranslationY="300">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#1E3A8A" Offset="0.0" />
+                    <GradientStop Color="#0F172A" Offset="1.0" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <VerticalStackLayout Spacing="20">
+
+                <!-- Icono -->
+                <Image Source="logout_icon.svg"
+                       WidthRequest="56"
+                       HeightRequest="56"
+                       HorizontalOptions="Center"/>
+
+                <!-- Título -->
+                <Label Text="Cerrar sesión"
+                       FontSize="22"
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       HorizontalOptions="Center"/>
+
+                <!-- Mensaje -->
+                <Label Text="¿Estás seguro de que quieres salir de tu cuenta?"
+                       FontSize="14"
+                       TextColor="#93C5FD"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"/>
+
+                <!-- Botones -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12" Margin="0,8,0,0">
+                    <Border Grid.Column="0"
+                            BackgroundColor="Transparent"
+                            StrokeShape="RoundRectangle 10"
+                            Stroke="#4A6FA5"
+                            StrokeThickness="1.5"
+                            Padding="0,14">
+                        <Label Text="Cancelar"
+                               FontSize="15"
+                               FontAttributes="Bold"
+                               TextColor="#93C5FD"
+                               HorizontalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnCancelarSalirTapped"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Border>
+                    <Border Grid.Column="1"
+                            BackgroundColor="#EF4444"
+                            StrokeShape="RoundRectangle 10"
+                            Stroke="#EF4444"
+                            StrokeThickness="0"
+                            Padding="0,14">
+                        <Label Text="Sí, salir"
+                               FontSize="15"
+                               FontAttributes="Bold"
+                               TextColor="White"
+                               HorizontalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnConfirmarSalirTapped"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Border>
+                </Grid>
+
+            </VerticalStackLayout>
+        </Border>
 
     </Grid>
 

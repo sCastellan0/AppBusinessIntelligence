@@ -23,5 +23,9 @@ namespace TFG_APPBusinessIntelligence.Models
         public DateTime FechaRegistro { get; set; } = DateTime.Now;
 
         public DateTime? UltimoAcceso { get; set; }
+
+        public string? TotpSecret { get; set; }
+
+        public bool Tiene2FA { get; set; } = false;
     }
 }

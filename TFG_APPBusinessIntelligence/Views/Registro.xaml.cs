@@ -12,13 +12,13 @@ namespace TFG_APPBusinessIntelligence.Views
 			_firebaseAuthService = firebaseAuthService;
 		}
 
-		private async void OnVolverClicked(object sender, EventArgs e)
+		private async void OnVolverClicked(object? sender, EventArgs e)
 		{
 			// Navega atrás
 			await Navigation.PopAsync();
 		}
 
-		private async void OnAccederClicked(object sender, EventArgs e)
+		private async void OnAccederClicked(object? sender, EventArgs e)
 		{
 			// Obtiene los valores de los campos
 			string usuario = UsuarioEntry.Text;
@@ -30,7 +30,7 @@ namespace TFG_APPBusinessIntelligence.Views
 			if (string.IsNullOrWhiteSpace(usuario) || string.IsNullOrWhiteSpace(telefono) ||
 				string.IsNullOrWhiteSpace(correo) || string.IsNullOrWhiteSpace(contrasena))
 			{
-				await DisplayAlert("Error", "Por favor complete todos los campos", "OK");
+				await DisplayAlertAsync("Error", "Por favor complete todos los campos", "OK");
 				return;
 			}
 
@@ -43,7 +43,7 @@ namespace TFG_APPBusinessIntelligence.Views
 
 			if (exito)
 			{
-				await DisplayAlert("Éxito", "¡Cuenta creada exitosamente para " + usuario + "!", "OK");
+				await DisplayAlertAsync("Éxito", "¡Cuenta creada exitosamente para " + usuario + "!", "OK");
 
 				// Limpiar campos
 				UsuarioEntry.Text = "";
@@ -56,7 +56,7 @@ namespace TFG_APPBusinessIntelligence.Views
 			}
 			else
 			{
-				await DisplayAlert("Error", mensaje, "OK");
+				await DisplayAlertAsync("Error", mensaje, "OK");
 			}
 		}
 	}

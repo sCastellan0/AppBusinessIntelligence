@@ -12,43 +12,67 @@ namespace TFG_APPBusinessIntelligence.Views
             _firebaseAuthService = firebaseAuthService;
         }
 
-        private async void OnVolverClicked(object sender, EventArgs e)
+        private async void OnVolverClicked(object? sender, EventArgs e)
         {
             // Navega atrás
             await Navigation.PopAsync();
         }
 
-        private async void OnAccederClicked(object sender, EventArgs e)
+        private async void OnRecuperarContrasenaTapped(object? sender, TappedEventArgs e)
         {
-            // Obtiene los valores de los campos
+            var firebaseAuthService = App.Current!.Handler!.MauiContext!.Services.GetService<FirebaseAuthService>();
+            var pagina = new RecuperarContrasena(firebaseAuthService!);
+            await Navigation.PushAsync(pagina);
+        }
+
+        private void MostrarError(string mensaje)
+        {
+            ErrorBannerLabel.Text = mensaje;
+            ErrorBanner.IsVisible = true;
+        }
+
+        private void OnCerrarErrorTapped(object? sender, TappedEventArgs e)
+        {
+            ErrorBanner.IsVisible = false;
+        }
+
+        private async void OnAccederClicked(object? sender, EventArgs e)
+        {
+            ErrorBanner.IsVisible = false;
+
             string correo = UsuarioEntry.Text;
             string contrasena = ContrasenaEntry.Text;
 
-            // Valida que no esten vacios
             if (string.IsNullOrWhiteSpace(correo) || string.IsNullOrWhiteSpace(contrasena))
             {
-                await DisplayAlert("Error", "Por favor ingrese correo y contraseña", "OK");
+                MostrarError("Por favor ingrese correo y contraseña");
                 return;
             }
 
-            // Intentar iniciar sesión con Firebase
-            var (exito, mensaje) = await _firebaseAuthService.IniciarSesionAsync(correo, contrasena);
+            var (exito, mensaje, requiere2FA) = await _firebaseAuthService.IniciarSesionAsync(correo, contrasena);
 
             if (exito)
             {
-                // Limpiar campos
                 UsuarioEntry.Text = "";
                 ContrasenaEntry.Text = "";
 
-                // Navegar al Dashboard
-                var dashboard = App.Current!.Handler!.MauiContext!.Services.GetService<Dashboard>();
-                await Navigation.PushAsync(dashboard!);
+                if (requiere2FA)
+                {
+                    var totpService = App.Current!.Handler!.MauiContext!.Services.GetService<TotpService>();
+                    var databaseService = App.Current!.Handler!.MauiContext!.Services.GetService<DatabaseService>();
+                    var verificacion = new Verificacion2FA(totpService!, databaseService!, _firebaseAuthService, correo);
+                    await Navigation.PushAsync(verificacion);
+                }
+                else
+                {
+                    var dashboard = App.Current!.Handler!.MauiContext!.Services.GetService<Dashboard>();
+                    await Navigation.PushAsync(dashboard!);
+                }
             }
             else
             {
-                await DisplayAlert("Error", mensaje, "OK");
+                MostrarError(mensaje);
             }
         }
-
     }
 }

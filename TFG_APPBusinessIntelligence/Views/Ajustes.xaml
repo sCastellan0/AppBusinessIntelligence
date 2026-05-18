@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TFG_APPBusinessIntelligence.Views.Ajustes"
+             Shell.NavBarIsVisible="False">
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#1E3A8A" Offset="0.0" />
+            <GradientStop Color="#0F172A" Offset="1.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <Grid Padding="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Cabecera -->
+        <Grid Grid.Row="0" Margin="0,20,0,30">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Column="0"
+                   Text="←"
+                   FontSize="28"
+                   TextColor="White"
+                   VerticalOptions="Center"
+                   Margin="0,0,12,0">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnVolverTapped" />
+                </Label.GestureRecognizers>
+            </Label>
+
+            <Label Grid.Column="1"
+                   Text="Ajustes"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   TextColor="White"
+                   VerticalOptions="Center"/>
+        </Grid>
+
+        <!-- Opciones -->
+        <VerticalStackLayout Grid.Row="1" Spacing="14">
+
+            <!-- Sección Seguridad -->
+            <Label Text="SEGURIDAD"
+                   FontSize="11"
+                   FontAttributes="Bold"
+                   TextColor="#60A5FA"
+                   Margin="4,0,0,4"
+                   CharacterSpacing="2"/>
+
+            <!-- Tarjeta 2FA -->
+            <Frame BackgroundColor="#1E293B"
+                   BorderColor="#334155"
+                   CornerRadius="12"
+                   Padding="16"
+                   HasShadow="False">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnConfigurar2FATapped" />
+                </Frame.GestureRecognizers>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0"
+                           Text="🔐"
+                           FontSize="30"
+                           VerticalOptions="Center"
+                           Margin="0,0,14,0"/>
+
+                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                        <Label Text="Verificación en dos pasos (2FA)"
+                               FontSize="15"
+                               FontAttributes="Bold"
+                               TextColor="White"/>
+                        <Label x:Name="Estado2FALabel"
+                               FontSize="12"
+                               TextColor="#94A3B8"/>
+                    </VerticalStackLayout>
+
+                    <Label Grid.Column="2"
+                           Text="›"
+                           FontSize="24"
+                           TextColor="#64748B"
+                           VerticalOptions="Center"/>
+                </Grid>
+            </Frame>
+
+            <!-- Tarjeta Cambiar contraseña -->
+            <Frame BackgroundColor="#1E293B"
+                   BorderColor="#334155"
+                   CornerRadius="12"
+                   Padding="16"
+                   HasShadow="False">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnCambiarContrasenaTapped" />
+                </Frame.GestureRecognizers>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0"
+                           Text="🔒"
+                           FontSize="30"
+                           VerticalOptions="Center"
+                           Margin="0,0,14,0"/>
+
+                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                        <Label Text="Cambiar contraseña"
+                               FontSize="15"
+                               FontAttributes="Bold"
+                               TextColor="White"/>
+                        <Label Text="Actualiza tu contraseña de acceso"
+                               FontSize="12"
+                               TextColor="#94A3B8"/>
+                    </VerticalStackLayout>
+
+                    <Label Grid.Column="2"
+                           Text="›"
+                           FontSize="24"
+                           TextColor="#64748B"
+                           VerticalOptions="Center"/>
+                </Grid>
+            </Frame>
+
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

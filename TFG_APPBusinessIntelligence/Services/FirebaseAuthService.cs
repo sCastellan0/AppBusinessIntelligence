@@ -85,43 +85,46 @@ namespace TFG_APPBusinessIntelligence.Services
             }
         }
 
-        public async Task<(bool exito, string mensaje)> IniciarSesionAsync(string correo, string password)
+        public async Task<(bool exito, string mensaje, bool requiere2FA)> IniciarSesionAsync(string correo, string password)
         {
             try
             {
                 // Validaciones
                 if (string.IsNullOrWhiteSpace(correo))
-                    return (false, "El correo es requerido");
+                    return (false, "El correo es requerido", false);
 
                 if (string.IsNullOrWhiteSpace(password))
-                    return (false, "La contraseña es requerida");
+                    return (false, "La contraseña es requerida", false);
 
                 // Iniciar sesión en Firebase
                 var credential = await _authClient.SignInWithEmailAndPasswordAsync(correo, password);
 
                 if (credential?.User == null)
-                    return (false, "Usuario o contraseña incorrectos");
+                    return (false, "Usuario o contraseña incorrectos", false);
 
                 // Guardar credencial actual
                 _usuarioActual = credential;
 
-                // Actualizar último acceso en SQLite local
-                var usuario = await _databaseService.GetUsuarioByNombreAsync(correo);
+                // Actualizar último acceso en SQLite local y comprobar 2FA
+                var usuario = await _databaseService.GetUsuarioByCorreoAsync(correo);
                 if (usuario != null)
                 {
                     usuario.UltimoAcceso = DateTime.Now;
                     await _databaseService.SaveUsuarioAsync(usuario);
+
+                    if (usuario.Tiene2FA && !string.IsNullOrEmpty(usuario.TotpSecret))
+                        return (true, "Se requiere verificación 2FA", true);
                 }
 
-                return (true, "Inicio de sesión exitoso");
+                return (true, "Inicio de sesión exitoso", false);
             }
             catch (FirebaseAuthException ex)
             {
-                return (false, ObtenerMensajeError(ex));
+                return (false, ObtenerMensajeError(ex), false);
             }
             catch (Exception ex)
             {
-                return (false, $"Error al iniciar sesión: {ex.Message}");
+                return (false, $"Error al iniciar sesión: {ex.Message}", false);
             }
         }
 
@@ -129,6 +132,72 @@ namespace TFG_APPBusinessIntelligence.Services
         {
             _authClient.SignOut();
             _usuarioActual = null;
+        }
+
+        /// <summary>
+        /// Envía un correo de restablecimiento de contraseña. No requiere sesión activa.
+        /// </summary>
+        public async Task<(bool exito, string mensaje)> EnviarResetPasswordAsync(string correo)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(correo))
+                    return (false, "Introduce tu correo electrónico");
+
+                await _authClient.ResetEmailPasswordAsync(correo);
+                return (true, "Se ha enviado un correo con las instrucciones para restablecer tu contraseña");
+            }
+            catch (FirebaseAuthException ex)
+            {
+                return (false, ObtenerMensajeError(ex));
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Cambia la contraseña del usuario autenticado reautenticando primero con la contraseña actual.
+        /// </summary>
+        public async Task<(bool exito, string mensaje)> CambiarPasswordAsync(string passwordActual, string passwordNueva)
+        {
+            try
+            {
+                if (_usuarioActual?.User == null)
+                    return (false, "No hay sesión activa");
+
+                if (string.IsNullOrWhiteSpace(passwordActual))
+                    return (false, "Introduce tu contraseña actual");
+
+                if (string.IsNullOrWhiteSpace(passwordNueva))
+                    return (false, "Introduce la nueva contraseña");
+
+                if (passwordNueva.Length < 6)
+                    return (false, "La nueva contraseña debe tener al menos 6 caracteres");
+
+                var correo = _usuarioActual.User.Info.Email;
+
+                // Reautenticar para confirmar la identidad antes de cambiar contraseña
+                await _authClient.SignInWithEmailAndPasswordAsync(correo, passwordActual);
+
+                // Cambiar contraseña
+                await _usuarioActual.User.ChangePasswordAsync(passwordNueva);
+
+                return (true, "Contraseña actualizada correctamente");
+            }
+            catch (FirebaseAuthException ex) when (ex.Reason == AuthErrorReason.WrongPassword)
+            {
+                return (false, "La contraseña actual es incorrecta");
+            }
+            catch (FirebaseAuthException ex)
+            {
+                return (false, ObtenerMensajeError(ex));
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error: {ex.Message}");
+            }
         }
 
         public string? ObtenerCorreoUsuario()
@@ -152,7 +221,7 @@ namespace TFG_APPBusinessIntelligence.Services
                 AuthErrorReason.UserNotFound => "Usuario no encontrado",
                 AuthErrorReason.TooManyAttemptsTryLater => "Demasiados intentos, intenta más tarde",
                 AuthErrorReason.UnknownEmailAddress => "Correo no registrado",
-                _ => $"Error de autenticación: {ex.Message}"
+                _ => "Usuario o contraseña incorrectos"
             };
         }
     }

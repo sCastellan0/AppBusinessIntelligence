@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using TFG_APPBusinessIntelligence.Services;
 using TFG_APPBusinessIntelligence.Views;
+using ZXing.Net.Maui.Controls;
 
 namespace TFG_APPBusinessIntelligence
 {
@@ -11,6 +12,7 @@ namespace TFG_APPBusinessIntelligence
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseBarcodeReader()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -21,11 +23,15 @@ namespace TFG_APPBusinessIntelligence
             builder.Services.AddSingleton<DatabaseService>();
             builder.Services.AddSingleton<AuthService>();
             builder.Services.AddSingleton<FirebaseAuthService>();
+            builder.Services.AddSingleton<TotpService>();
 
             // Registrar páginas
             builder.Services.AddTransient<InicioSesion>();
             builder.Services.AddTransient<Registro>();
             builder.Services.AddTransient<Dashboard>();
+            builder.Services.AddTransient<Ajustes>();
+            builder.Services.AddTransient<RecuperarContrasena>();
+            builder.Services.AddTransient<CambiarContrasena>();
 
 #if DEBUG
             builder.Logging.AddDebug();

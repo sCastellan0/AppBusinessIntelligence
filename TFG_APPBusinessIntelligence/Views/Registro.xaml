@@ -72,7 +72,7 @@
             </Frame>
 
             <!-- Etiqueta Correo -->
-            <Label Text="Numero de Telefono" 
+            <Label Text="Correo electrónico" 
         FontSize="14" 
         TextColor="White"
         HorizontalOptions="Center"
@@ -86,12 +86,13 @@
           Padding="0"
           HasShadow="False">
                 <Entry x:Name="CorreoEntry"
-         Placeholder="Ingrese su correo"
+         Placeholder="Ingrese su correo electrónico"
          PlaceholderColor="#BDC3C7"
          FontSize="14"
          BackgroundColor="Transparent"
          TextColor="#2C3E50"
-         Margin="12,8"/>
+         Margin="12,8"
+         Keyboard="Email"/>
             </Frame>
 
             <!-- Etiqueta Contrasena -->
