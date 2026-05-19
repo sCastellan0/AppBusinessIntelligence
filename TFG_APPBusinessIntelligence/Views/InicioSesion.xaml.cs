@@ -10,6 +10,7 @@ namespace TFG_APPBusinessIntelligence.Views
         {
             InitializeComponent();
             _firebaseAuthService = firebaseAuthService;
+            HideSoftInputOnTapped = true;
         }
 
         private async void OnVolverClicked(object? sender, EventArgs e)
@@ -39,6 +40,8 @@ namespace TFG_APPBusinessIntelligence.Views
         private async void OnAccederClicked(object? sender, EventArgs e)
         {
             ErrorBanner.IsVisible = false;
+            UsuarioEntry.Unfocus();
+            ContrasenaEntry.Unfocus();
 
             string correo = UsuarioEntry.Text;
             string contrasena = ContrasenaEntry.Text;

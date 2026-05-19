@@ -5,8 +5,8 @@
              Shell.NavBarIsVisible="False">
     <ContentPage.Background>
         <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-            <GradientStop Color="#1E3A8A" Offset="0.0" />
-            <GradientStop Color="#0F172A" Offset="1.0" />
+            <GradientStop Color="{DynamicResource TemaGradienteInicio}" Offset="0.0" />
+            <GradientStop Color="{DynamicResource TemaGradienteFin}" Offset="1.0" />
         </LinearGradientBrush>
     </ContentPage.Background>
 
@@ -45,17 +45,165 @@
         <!-- Opciones -->
         <VerticalStackLayout Grid.Row="1" Spacing="14">
 
+            <!-- Sección Apariencia -->
+            <Label Text="APARIENCIA"
+                   FontSize="11"
+                   FontAttributes="Bold"
+                   TextColor="{DynamicResource TemaAccent}"
+                   Margin="4,0,0,4"
+                   CharacterSpacing="2"/>
+
+            <!-- Tarjeta Tema -->
+            <Frame BackgroundColor="{DynamicResource TemaTarjeta}"
+                   BorderColor="{DynamicResource TemaBorde}"
+                   CornerRadius="12"
+                   Padding="16"
+                   HasShadow="False">
+                <VerticalStackLayout Spacing="12">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0"
+                               Text="🎨"
+                               FontSize="30"
+                               VerticalOptions="Center"
+                               Margin="0,0,14,0"/>
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                            <Label Text="Tema de la app"
+                                   FontSize="15"
+                                   FontAttributes="Bold"
+                                   TextColor="White"/>
+                            <Label x:Name="EstadoTemaLabel"
+                                   FontSize="12"
+                                   TextColor="{DynamicResource TemaSubtexto}"/>
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <!-- Botones de selección de tema -->
+                    <Grid ColumnSpacing="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Button x:Name="BtnTemaOscuro"
+                                Grid.Column="0"
+                                Text="🌙 Oscuro"
+                                FontSize="13"
+                                FontAttributes="Bold"
+                                CornerRadius="10"
+                                HeightRequest="42"
+                                Clicked="OnTemaOscuroClicked"/>
+
+                        <Button x:Name="BtnTemaAzulClaro"
+                                Grid.Column="1"
+                                Text="☀️ Azul claro"
+                                FontSize="13"
+                                FontAttributes="Bold"
+                                CornerRadius="10"
+                                HeightRequest="42"
+                                Clicked="OnTemaAzulClaroClicked"/>
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Sección Notificaciones -->
+            <Label Text="NOTIFICACIONES"
+                   FontSize="11"
+                   FontAttributes="Bold"
+                   TextColor="{DynamicResource TemaAccent}"
+                   Margin="4,0,0,4"
+                   CharacterSpacing="2"/>
+
+            <!-- Tarjeta Notificaciones -->
+            <Frame BackgroundColor="{DynamicResource TemaTarjeta}"
+                   BorderColor="{DynamicResource TemaBorde}"
+                   CornerRadius="12"
+                   Padding="16"
+                   HasShadow="False">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0"
+                           Text="🔔"
+                           FontSize="30"
+                           VerticalOptions="Center"
+                           Margin="0,0,14,0"/>
+
+                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                        <Label Text="Notificaciones"
+                               FontSize="15"
+                               FontAttributes="Bold"
+                               TextColor="White"/>
+                        <Label x:Name="EstadoNotifLabel"
+                               FontSize="12"
+                               TextColor="{DynamicResource TemaSubtexto}"/>
+                    </VerticalStackLayout>
+
+                    <Switch x:Name="NotifSwitch"
+                            Grid.Column="2"
+                            VerticalOptions="Center"
+                            OnColor="#3B82F6"
+                            ThumbColor="White"
+                            Toggled="OnNotifToggled"/>
+                </Grid>
+            </Frame>
+
+            <!-- Tarjeta Almacenamiento -->
+            <Frame BackgroundColor="{DynamicResource TemaTarjeta}"
+                   BorderColor="{DynamicResource TemaBorde}"
+                   CornerRadius="12"
+                   Padding="16"
+                   HasShadow="False">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0"
+                           Text="📁"
+                           FontSize="30"
+                           VerticalOptions="Center"
+                           Margin="0,0,14,0"/>
+
+                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                        <Label Text="Almacenamiento"
+                               FontSize="15"
+                               FontAttributes="Bold"
+                               TextColor="White"/>
+                        <Label x:Name="EstadoAlmacenLabel"
+                               FontSize="12"
+                               TextColor="{DynamicResource TemaSubtexto}"/>
+                    </VerticalStackLayout>
+
+                    <Switch x:Name="AlmacenSwitch"
+                            Grid.Column="2"
+                            VerticalOptions="Center"
+                            OnColor="#3B82F6"
+                            ThumbColor="White"
+                            Toggled="OnAlmacenToggled"/>
+                </Grid>
+            </Frame>
+
             <!-- Sección Seguridad -->
             <Label Text="SEGURIDAD"
                    FontSize="11"
                    FontAttributes="Bold"
-                   TextColor="#60A5FA"
+                   TextColor="{DynamicResource TemaAccent}"
                    Margin="4,0,0,4"
                    CharacterSpacing="2"/>
 
             <!-- Tarjeta 2FA -->
-            <Frame BackgroundColor="#1E293B"
-                   BorderColor="#334155"
+            <Frame BackgroundColor="{DynamicResource TemaTarjeta}"
+                   BorderColor="{DynamicResource TemaBorde}"
                    CornerRadius="12"
                    Padding="16"
                    HasShadow="False">
@@ -82,20 +230,20 @@
                                TextColor="White"/>
                         <Label x:Name="Estado2FALabel"
                                FontSize="12"
-                               TextColor="#94A3B8"/>
+                               TextColor="{DynamicResource TemaSubtexto}"/>
                     </VerticalStackLayout>
 
                     <Label Grid.Column="2"
                            Text="›"
                            FontSize="24"
-                           TextColor="#64748B"
+                           TextColor="{DynamicResource TemaAccentOscuro}"
                            VerticalOptions="Center"/>
                 </Grid>
             </Frame>
 
             <!-- Tarjeta Cambiar contraseña -->
-            <Frame BackgroundColor="#1E293B"
-                   BorderColor="#334155"
+            <Frame BackgroundColor="{DynamicResource TemaTarjeta}"
+                   BorderColor="{DynamicResource TemaBorde}"
                    CornerRadius="12"
                    Padding="16"
                    HasShadow="False">
@@ -122,13 +270,13 @@
                                TextColor="White"/>
                         <Label Text="Actualiza tu contraseña de acceso"
                                FontSize="12"
-                               TextColor="#94A3B8"/>
+                               TextColor="{DynamicResource TemaSubtexto}"/>
                     </VerticalStackLayout>
 
                     <Label Grid.Column="2"
                            Text="›"
                            FontSize="24"
-                           TextColor="#64748B"
+                           TextColor="{DynamicResource TemaAccentOscuro}"
                            VerticalOptions="Center"/>
                 </Grid>
             </Frame>

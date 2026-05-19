@@ -20,21 +20,20 @@ namespace TFG_APPBusinessIntelligence.Views
 
 		private async void OnAccederClicked(object? sender, EventArgs e)
 		{
-			// Obtiene los valores de los campos
+			MostrarError(false, "");
+
 			string usuario = UsuarioEntry.Text;
 			string telefono = TelefonoEntry.Text;
 			string correo = CorreoEntry.Text;
 			string contrasena = ContrasenaEntry.Text;
 
-			// Valida que no esten vacios
 			if (string.IsNullOrWhiteSpace(usuario) || string.IsNullOrWhiteSpace(telefono) ||
 				string.IsNullOrWhiteSpace(correo) || string.IsNullOrWhiteSpace(contrasena))
 			{
-				await DisplayAlertAsync("Error", "Por favor complete todos los campos", "OK");
+				MostrarError(true, "Por favor complete todos los campos");
 				return;
 			}
 
-			// Intentar registrar usuario en Firebase
 			var (exito, mensaje) = await _firebaseAuthService.RegistrarUsuarioAsync(
 				usuario,
 				correo,
@@ -43,21 +42,28 @@ namespace TFG_APPBusinessIntelligence.Views
 
 			if (exito)
 			{
-				await DisplayAlertAsync("Éxito", "¡Cuenta creada exitosamente para " + usuario + "!", "OK");
-
-				// Limpiar campos
 				UsuarioEntry.Text = "";
 				TelefonoEntry.Text = "";
 				CorreoEntry.Text = "";
 				ContrasenaEntry.Text = "";
 
-				// Navegar de vuelta al Login
 				await Navigation.PopAsync();
 			}
 			else
 			{
-				await DisplayAlertAsync("Error", mensaje, "OK");
+				MostrarError(true, mensaje);
 			}
+		}
+
+		private void MostrarError(bool visible, string mensaje)
+		{
+			ErrorBannerLabel.Text = mensaje;
+			ErrorBanner.IsVisible = visible;
+		}
+
+		private void OnCerrarErrorTapped(object? sender, TappedEventArgs e)
+		{
+			MostrarError(false, "");
 		}
 	}
 }

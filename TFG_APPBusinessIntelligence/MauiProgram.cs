@@ -2,6 +2,9 @@
 using TFG_APPBusinessIntelligence.Services;
 using TFG_APPBusinessIntelligence.Views;
 using ZXing.Net.Maui.Controls;
+#if ANDROID
+using TFG_APPBusinessIntelligence.Platforms.Android;
+#endif
 
 namespace TFG_APPBusinessIntelligence
 {
@@ -17,6 +20,12 @@ namespace TFG_APPBusinessIntelligence
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                })
+                .ConfigureMauiHandlers(handlers =>
+                {
+#if ANDROID
+                    handlers.AddHandler<SesionExpiradaPopup, TransparentModalPageHandler>();
+#endif
                 });
 
             // Registrar servicios
@@ -25,6 +34,7 @@ namespace TFG_APPBusinessIntelligence
             builder.Services.AddSingleton<FirebaseAuthService>();
             builder.Services.AddSingleton<TotpService>();
             builder.Services.AddSingleton<InactivityService>();
+            builder.Services.AddSingleton<ThemeService>();
 
             // Registrar páginas
             builder.Services.AddTransient<InicioSesion>();
@@ -33,6 +43,7 @@ namespace TFG_APPBusinessIntelligence
             builder.Services.AddTransient<Ajustes>();
             builder.Services.AddTransient<RecuperarContrasena>();
             builder.Services.AddTransient<CambiarContrasena>();
+            builder.Services.AddTransient<SesionExpiradaPopup>();
 
 #if DEBUG
             builder.Logging.AddDebug();

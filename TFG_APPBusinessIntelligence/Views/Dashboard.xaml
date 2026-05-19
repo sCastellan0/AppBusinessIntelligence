@@ -6,8 +6,8 @@
              NavigationPage.HasNavigationBar="False">
     <ContentPage.Background>
         <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-            <GradientStop Color="#1E3A8A" Offset="0.0" />
-            <GradientStop Color="#0F172A" Offset="1.0" />
+            <GradientStop Color="{DynamicResource TemaGradienteInicio}" Offset="0.0" />
+            <GradientStop Color="{DynamicResource TemaGradienteFin}" Offset="1.0" />
         </LinearGradientBrush>
     </ContentPage.Background>
 

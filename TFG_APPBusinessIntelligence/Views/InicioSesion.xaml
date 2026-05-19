@@ -5,137 +5,152 @@
              Shell.NavBarIsVisible="False">
     <ContentPage.Background>
         <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-            <GradientStop Color="#1E3A8A" Offset="0.0" />
-            <GradientStop Color="#0F172A" Offset="1.0" />
+            <GradientStop Color="{DynamicResource TemaGradienteInicio}" Offset="0.0" />
+            <GradientStop Color="{DynamicResource TemaGradienteFin}" Offset="1.0" />
         </LinearGradientBrush>
     </ContentPage.Background>
 
-    <VerticalStackLayout Spacing="20" 
-                     Padding="30" 
-                     VerticalOptions="Center"
-                     HorizontalOptions="Fill">
+    <ScrollView>
+        <Grid Padding="24" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-        <!-- Titulo -->
-        <Label Text="INICIO DE SESION" 
-            FontSize="28" 
-            FontAttributes="Bold" 
-            TextColor="White"
-            HorizontalOptions="Center"
-            HorizontalTextAlignment="Center"
-            Margin="0,0,0,25"/>
+            <!-- Cabecera -->
+            <Grid Grid.Row="0" Margin="0,20,0,30">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-        <!-- Etiqueta Correo -->
-        <Label Text="Correo electrónico" 
-            FontSize="14" 
-            TextColor="White"
-            HorizontalOptions="Center"
-            HorizontalTextAlignment="Center"
-            Margin="0,0,0,5"/>
-
-        <!-- Campo de texto para Correo -->
-        <Frame BackgroundColor="White" 
-            BorderColor="#BDC3C7"
-            CornerRadius="5"
-            Padding="0"
-            HasShadow="False">
-            <Entry x:Name="UsuarioEntry"
-                Placeholder="Ingrese su correo electrónico"
-                PlaceholderColor="#BDC3C7"
-                FontSize="14"
-                BackgroundColor="Transparent"
-                TextColor="#2C3E50"
-                Margin="12,8"
-                Keyboard="Email"/>
-        </Frame>
-
-        <!-- Etiqueta Contrasena -->
-        <Label Text="Contrasena" 
-            FontSize="14" 
-            TextColor="White"
-            HorizontalOptions="Center"
-            HorizontalTextAlignment="Center"
-            Margin="0,10,0,5"/>
-
-        <!-- Campo de contrasena -->
-        <Frame BackgroundColor="White" 
-            BorderColor="#BDC3C7"
-            CornerRadius="5"
-            Padding="0"
-            HasShadow="False">
-            <Entry x:Name="ContrasenaEntry"
-                Placeholder="Ingrese su contrasena"
-                PlaceholderColor="#BDC3C7"
-                FontSize="14"
-                BackgroundColor="Transparent"
-                TextColor="#2C3E50"
-                Margin="12,8"
-                IsPassword="True"/>
-        </Frame>
-
-        <!-- Botones Volver y Acceder -->
-        <HorizontalStackLayout Spacing="10" 
-                           HorizontalOptions="Center"
-                           Margin="0,25,0,0">
-            <!-- Boton Volver -->
-            <Button Text="Volver" 
-                 BackgroundColor="#95A5A6" 
-                 TextColor="Red" 
-                 FontSize="14"
-                 CornerRadius="5"
-                 WidthRequest="120"
-                 Clicked="OnVolverClicked"/>
-
-            <!-- Boton Acceder -->
-            <Button Text="Acceder" 
-                 BackgroundColor="#3498DB" 
-                 TextColor="White" 
-                 FontSize="14"
-                 FontAttributes="Bold"
-                 CornerRadius="5"
-                 WidthRequest="120"
-                 Clicked="OnAccederClicked"/>
-        </HorizontalStackLayout>
-
-        <!-- Banner de error de login -->
-        <Border x:Name="ErrorBanner"
-                IsVisible="False"
-                BackgroundColor="#7F1D1D"
-                StrokeShape="RoundRectangle 10"
-                Stroke="#EF4444"
-                StrokeThickness="1"
-                Padding="14,10">
-            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
-                <Label Grid.Column="0" Text="⚠️" FontSize="18" VerticalOptions="Center"/>
-                <Label x:Name="ErrorBannerLabel"
-                       Grid.Column="1"
-                       Text=""
+                <Label Grid.Column="0"
+                       Text="&#x2190;"
+                       FontSize="28"
                        TextColor="White"
-                       FontSize="14"
-                       VerticalOptions="Center"/>
-                <Label Grid.Column="2"
-                       Text="✕"
-                       TextColor="#FCA5A5"
-                       FontSize="16"
-                       VerticalOptions="Center">
+                       VerticalOptions="Center"
+                       Margin="0,0,12,0">
                     <Label.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnCerrarErrorTapped"/>
+                        <TapGestureRecognizer Tapped="OnVolverClicked" />
                     </Label.GestureRecognizers>
                 </Label>
+
+                <Label Grid.Column="1"
+                       Text="Inicio de sesi&#xF3;n"
+                       FontSize="24"
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       VerticalOptions="Center" />
             </Grid>
-        </Border>
 
-        <!-- Enlace recuperar contraseña -->
-        <Label Text="¿Olvidaste tu contraseña?"
-               FontSize="13"
-               TextColor="#93C5FD"
-               HorizontalOptions="Center"
-               TextDecorations="Underline"
-               Margin="0,8,0,0">
-            <Label.GestureRecognizers>
-                <TapGestureRecognizer Tapped="OnRecuperarContrasenaTapped"/>
-            </Label.GestureRecognizers>
-        </Label>
+            <!-- Formulario -->
+            <VerticalStackLayout Grid.Row="1" Spacing="14">
 
-    </VerticalStackLayout>
+                <Label Text="CREDENCIALES"
+                       FontSize="11"
+                       FontAttributes="Bold"
+                       TextColor="{DynamicResource TemaAccent}"
+                       Margin="4,0,0,4"
+                       CharacterSpacing="2" />
+
+                <!-- Tarjeta Correo -->
+                <Frame BackgroundColor="{DynamicResource TemaTarjeta}"
+                       BorderColor="{DynamicResource TemaBorde}"
+                       CornerRadius="12"
+                       Padding="16"
+                       HasShadow="False">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="&#x2709;&#xFE0F;  Correo electr&#xF3;nico"
+                               FontSize="12"
+                               FontAttributes="Bold"
+                               TextColor="{DynamicResource TemaSubtexto}"
+                               CharacterSpacing="0.5" />
+                        <Entry x:Name="UsuarioEntry"
+                               Placeholder="Ingrese su correo electr&#xF3;nico"
+                               PlaceholderColor="#475569"
+                               FontSize="15"
+                               BackgroundColor="Transparent"
+                               TextColor="White"
+                               Keyboard="Email" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Tarjeta Contraseña -->
+                <Frame BackgroundColor="{DynamicResource TemaTarjeta}"
+                       BorderColor="{DynamicResource TemaBorde}"
+                       CornerRadius="12"
+                       Padding="16"
+                       HasShadow="False">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="&#x1F512;  Contrase&#xF1;a"
+                               FontSize="12"
+                               FontAttributes="Bold"
+                               TextColor="{DynamicResource TemaSubtexto}"
+                               CharacterSpacing="0.5" />
+                        <Entry x:Name="ContrasenaEntry"
+                               Placeholder="Ingrese su contrase&#xF1;a"
+                               PlaceholderColor="#475569"
+                               FontSize="15"
+                               BackgroundColor="Transparent"
+                               TextColor="White"
+                               IsPassword="True" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Banner de error -->
+                <Border x:Name="ErrorBanner"
+                        IsVisible="False"
+                        BackgroundColor="#7F1D1D"
+                        StrokeShape="RoundRectangle 10"
+                        Stroke="#EF4444"
+                        StrokeThickness="1"
+                        Padding="14,10">
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                        <Label Grid.Column="0" Text="&#x26A0;&#xFE0F;" FontSize="18" VerticalOptions="Center" />
+                        <Label x:Name="ErrorBannerLabel"
+                               Grid.Column="1"
+                               Text=""
+                               TextColor="White"
+                               FontSize="14"
+                               VerticalOptions="Center" />
+                        <Label Grid.Column="2"
+                               Text="&#x2715;"
+                               TextColor="#FCA5A5"
+                               FontSize="16"
+                               VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnCerrarErrorTapped" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Grid>
+                </Border>
+
+                <!-- Botón Acceder -->
+                <Button Text="Acceder"
+                        BackgroundColor="#3B82F6"
+                        TextColor="White"
+                        FontSize="15"
+                        FontAttributes="Bold"
+                        CornerRadius="12"
+                        HeightRequest="50"
+                        Margin="0,10,0,0"
+                        Clicked="OnAccederClicked" />
+
+                <!-- Enlace recuperar contraseña -->
+                <Label Text="&#xBF;Olvidaste tu contrase&#xF1;a?"
+                       FontSize="13"
+                       TextColor="#93C5FD"
+                       HorizontalOptions="Center"
+                       TextDecorations="Underline"
+                       Margin="0,4,0,0">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnRecuperarContrasenaTapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+
+            </VerticalStackLayout>
+        </Grid>
+    </ScrollView>
 
 </ContentPage>
+

@@ -7,18 +7,20 @@ namespace TFG_APPBusinessIntelligence.Views
         private readonly FirebaseAuthService _firebaseAuthService;
         private readonly DatabaseService _databaseService;
         private readonly TotpService _totpService;
+        private readonly ThemeService _themeService;
 
-        public Dashboard(FirebaseAuthService firebaseAuthService, DatabaseService databaseService, TotpService totpService)
+        public Dashboard(FirebaseAuthService firebaseAuthService, DatabaseService databaseService, TotpService totpService, ThemeService themeService)
         {
             InitializeComponent();
             _firebaseAuthService = firebaseAuthService;
             _databaseService = databaseService;
             _totpService = totpService;
+            _themeService = themeService;
         }
 
         private async void OnConfiguracionTapped(object? sender, EventArgs e)
         {
-            var ajustes = new Ajustes(_firebaseAuthService, _databaseService, _totpService);
+            var ajustes = new Ajustes(_firebaseAuthService, _databaseService, _totpService, _themeService);
             await Navigation.PushAsync(ajustes);
         }
 

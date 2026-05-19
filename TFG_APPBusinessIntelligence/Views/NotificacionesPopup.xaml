@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TFG_APPBusinessIntelligence.Views.NotificacionesPopup"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="Transparent">
+    <Frame BackgroundColor="{DynamicResource TemaTarjeta}"
+           BorderColor="#3B82F6"
+           CornerRadius="20"
+           Padding="28,24"
+           HasShadow="False"
+           HorizontalOptions="Center"
+           VerticalOptions="Center"
+           MaximumWidthRequest="320">
+        <VerticalStackLayout Spacing="16">
+
+            <Label Text="🔔"
+                   FontSize="48"
+                   HorizontalOptions="Center" />
+
+            <Label Text="Desactivar notificaciones"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   TextColor="White"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center" />
+
+            <BoxView HeightRequest="1"
+                     BackgroundColor="#334155"
+                     Margin="0,4" />
+
+            <Label Text="Android no permite desactivar permisos desde la app. Para desactivar las notificaciones debes hacerlo desde los ajustes del sistema."
+                   FontSize="14"
+                   TextColor="#94A3B8"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center"
+                   LineBreakMode="WordWrap" />
+
+            <!-- Botón principal -->
+            <Button Text="Abrir ajustes del sistema"
+                    BackgroundColor="#3B82F6"
+                    TextColor="White"
+                    FontSize="15"
+                    FontAttributes="Bold"
+                    CornerRadius="12"
+                    HeightRequest="48"
+                    Margin="0,8,0,0"
+                    Clicked="OnAbrirAjustesClicked" />
+
+            <!-- Botón cancelar -->
+            <Button Text="Cancelar"
+                    BackgroundColor="{DynamicResource TemaBorde}"
+                    TextColor="{DynamicResource TemaSubtexto}"
+                    FontSize="14"
+                    CornerRadius="12"
+                    HeightRequest="44"
+                    Clicked="OnCancelarClicked" />
+
+        </VerticalStackLayout>
+    </Frame>
+</ContentPage>

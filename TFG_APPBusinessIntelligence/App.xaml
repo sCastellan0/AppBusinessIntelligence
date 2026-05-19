@@ -9,6 +9,15 @@
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <!-- Tema activo (Oscuro por defecto) -->
+            <Color x:Key="TemaGradienteInicio">#1E3A8A</Color>
+            <Color x:Key="TemaGradienteFin">#0F172A</Color>
+            <Color x:Key="TemaTarjeta">#1E293B</Color>
+            <Color x:Key="TemaBorde">#334155</Color>
+            <Color x:Key="TemaSubtexto">#94A3B8</Color>
+            <Color x:Key="TemaAccent">#60A5FA</Color>
+            <Color x:Key="TemaAccentOscuro">#64748B</Color>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

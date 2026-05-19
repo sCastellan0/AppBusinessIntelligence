@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TFG_APPBusinessIntelligence.Views.SesionExpiradaPopup"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="Transparent">
+    <Frame BackgroundColor="{DynamicResource TemaTarjeta}" BorderColor="#3B82F6" CornerRadius="20" Padding="28,24" HasShadow="False" HorizontalOptions="Center" VerticalOptions="Center" MaximumWidthRequest="320">
+        <VerticalStackLayout Spacing="16">
+            <Label Text="&#x23F1;&#xFE0F;" FontSize="48" HorizontalOptions="Center" />
+            <Label Text="Sesi&#xF3;n expirada" FontSize="20" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
+            <BoxView HeightRequest="1" BackgroundColor="#334155" Margin="0,4" />
+            <Label Text="Tu sesi&#xF3;n se ha cerrado por inactividad. Por favor, vuelve a iniciar sesi&#xF3;n." FontSize="14" TextColor="#94A3B8" HorizontalOptions="Center" HorizontalTextAlignment="Center" LineBreakMode="WordWrap" />
+            <Button Text="Entendido" BackgroundColor="#3B82F6" TextColor="White" FontSize="15" FontAttributes="Bold" CornerRadius="12" HeightRequest="48" Margin="0,8,0,0" Clicked="OnAceptarClicked" />
+        </VerticalStackLayout>
+    </Frame>
+</ContentPage>

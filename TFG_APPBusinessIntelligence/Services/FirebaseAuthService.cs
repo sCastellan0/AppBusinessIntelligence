@@ -130,8 +130,11 @@ namespace TFG_APPBusinessIntelligence.Services
 
         public void CerrarSesion()
         {
-            _authClient.SignOut();
-            _usuarioActual = null;
+            if (_usuarioActual != null)
+            {
+                _authClient.SignOut();
+                _usuarioActual = null;
+            }
         }
 
         /// <summary>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using TFG_APPBusinessIntelligence.Services;
+using TFG_APPBusinessIntelligence.Views;
 
 namespace TFG_APPBusinessIntelligence
 {
@@ -7,12 +8,17 @@ namespace TFG_APPBusinessIntelligence
     {
         private readonly FirebaseAuthService _firebaseAuthService;
         private readonly InactivityService _inactivityService;
+        private readonly IServiceProvider _serviceProvider;
 
-        public App(FirebaseAuthService firebaseAuthService, InactivityService inactivityService)
+        public App(FirebaseAuthService firebaseAuthService, InactivityService inactivityService, IServiceProvider serviceProvider)
         {
             InitializeComponent();
             _firebaseAuthService = firebaseAuthService;
             _inactivityService = inactivityService;
+            _serviceProvider = serviceProvider;
+
+            // Aplicar tema guardado antes de crear la UI
+            _serviceProvider.GetRequiredService<ThemeService>().AplicarTemaGuardado();
 
             _inactivityService.SesionExpirada += OnSesionExpirada;
         }
@@ -26,15 +32,11 @@ namespace TFG_APPBusinessIntelligence
                     _inactivityService.Detener();
                     _firebaseAuthService.CerrarSesion();
 
-                    if (MainPage is NavigationPage navPage)
-                    {
-                        await navPage.Navigation.PopToRootAsync();
-                    }
+                    var popup = _serviceProvider.GetRequiredService<SesionExpiradaPopup>();
+                    await Shell.Current.Navigation.PushModalAsync(popup, animated: true);
+                    await popup.Resultado;
 
-                    await Shell.Current.DisplayAlert(
-                        "Sesión cerrada",
-                        "Tu sesión ha expirado por inactividad.",
-                        "Aceptar");
+                    await Shell.Current.GoToAsync("//MainPage");
                 }
             });
         }
