@@ -60,25 +60,19 @@
                             FontSize="14"
                             HeightRequest="46"
                             Clicked="OnSeleccionarArchivoClicked" />
-                </VerticalStackLayout>
-            </Frame>
 
-            <!-- Tarjeta opciones -->
-            <Frame BackgroundColor="{DynamicResource TemaTarjeta}"
-                   BorderColor="{DynamicResource TemaBorde}"
-                   CornerRadius="14" Padding="20" HasShadow="True">
-                <VerticalStackLayout Spacing="12">
-
-                    <Label Text="OPCIONES" FontSize="11" FontAttributes="Bold"
-                           TextColor="{DynamicResource TemaSubtexto}" />
-
-                    <HorizontalStackLayout Spacing="10">
-                        <Switch x:Name="AbrirPdfSwitch" IsToggled="True"
-                                OnColor="{DynamicResource TemaAccent}" />
-                        <Label Text="Abrir PDF al terminar" TextColor="White"
-                               FontSize="13" VerticalOptions="Center" />
-                    </HorizontalStackLayout>
-
+                    <!-- Botón Ver Dataset (oculto inicialmente) -->
+                    <Button x:Name="VerDatasetBtn"
+                            Text="👁️  Ver contenido del dataset"
+                            BackgroundColor="Transparent"
+                            BorderColor="{DynamicResource TemaAccent}"
+                            BorderWidth="1.5"
+                            TextColor="{DynamicResource TemaAccent}"
+                            CornerRadius="10"
+                            FontSize="13"
+                            HeightRequest="44"
+                            IsVisible="False"
+                            Clicked="OnVerDatasetClicked" />
                 </VerticalStackLayout>
             </Frame>
 
@@ -127,11 +121,6 @@
                     <Label x:Name="RutaPdfLabel"
                            TextColor="#94A3B8" FontSize="11"
                            HorizontalTextAlignment="Center" />
-                    <Button Text="📄  Abrir PDF"
-                            BackgroundColor="#16A34A"
-                            TextColor="White" CornerRadius="10"
-                            FontSize="13" HeightRequest="42"
-                            Clicked="OnAbrirPdfClicked" />
                 </VerticalStackLayout>
             </Frame>
 

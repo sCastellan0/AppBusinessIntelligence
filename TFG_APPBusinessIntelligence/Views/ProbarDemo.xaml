@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TFG_APPBusinessIntelligence.Views.ProbarDemo"
+             Title=""
+             Shell.NavBarIsVisible="False">
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="{DynamicResource TemaGradienteInicio}" Offset="0.0" />
+            <GradientStop Color="{DynamicResource TemaGradienteFin}"   Offset="1.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24,48,24,32" Spacing="20">
+
+            <!-- Banner superior -->
+            <Frame BackgroundColor="#1E3A5F" CornerRadius="14" Padding="20,14" HasShadow="True">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Modo Demostración"
+                           FontSize="22" FontAttributes="Bold"
+                           TextColor="White" HorizontalOptions="Center" />
+                    <Label Text="Explora 3 datasets de ejemplo con informes completos"
+                           FontSize="12" TextColor="#94A3B8"
+                           HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- DATASET 1: VENTAS -->
+            <Frame BackgroundColor="{DynamicResource TemaTarjeta}"
+                   BorderColor="#3B82F6"
+                   CornerRadius="14" Padding="20" HasShadow="True">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="📊 VENTAS MENSUALES"
+                           FontSize="11" FontAttributes="Bold"
+                           TextColor="#3B82F6" />
+
+                    <Frame BackgroundColor="#0D2137"
+                           BorderColor="#2D4A6A"
+                           CornerRadius="10" Padding="16" HasShadow="False">
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Ventas_Mensuales_2024.csv"
+                                   FontSize="15" FontAttributes="Bold"
+                                   TextColor="White" />
+                            <Label Text="📈 Dataset de ventas con 12 meses de datos"
+                                   FontSize="12" TextColor="#94A3B8" />
+                            <Label Text="📦 Productos, Categorías, Ventas, Regiones"
+                                   FontSize="12" TextColor="#94A3B8" />
+                            <Label Text="🔢 500 registros · 8 columnas"
+                                   FontSize="11" TextColor="{DynamicResource TemaSubtexto}" />
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Button Grid.Column="0"
+                                Text="📂 Dataset"
+                                BackgroundColor="#334155"
+                                TextColor="White"
+                                CornerRadius="10"
+                                FontSize="13"
+                                HeightRequest="44"
+                                Clicked="OnVerDatasetVentasClicked" />
+                        <Button Grid.Column="1"
+                                Text="📄 Informe"
+                                BackgroundColor="#3B82F6"
+                                TextColor="White"
+                                CornerRadius="10"
+                                FontSize="13"
+                                HeightRequest="44"
+                                Clicked="OnVerInformeVentasClicked" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- DATASET 2: MARKETING -->
+            <Frame BackgroundColor="{DynamicResource TemaTarjeta}"
+                   BorderColor="#8B5CF6"
+                   CornerRadius="14" Padding="20" HasShadow="True">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="📣 CAMPAÑAS DE MARKETING"
+                           FontSize="11" FontAttributes="Bold"
+                           TextColor="#8B5CF6" />
+
+                    <Frame BackgroundColor="#0D2137"
+                           BorderColor="#2D4A6A"
+                           CornerRadius="10" Padding="16" HasShadow="False">
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Campañas_Marketing_2024.csv"
+                                   FontSize="15" FontAttributes="Bold"
+                                   TextColor="White" />
+                            <Label Text="📣 Análisis de campañas digitales y tradicionales"
+                                   FontSize="12" TextColor="#94A3B8" />
+                            <Label Text="🎯 Canales, Conversiones, ROI, Engagement"
+                                   FontSize="12" TextColor="#94A3B8" />
+                            <Label Text="🔢 400 registros · 9 columnas"
+                                   FontSize="11" TextColor="{DynamicResource TemaSubtexto}" />
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Button Grid.Column="0"
+                                Text="📂 Dataset"
+                                BackgroundColor="#334155"
+                                TextColor="White"
+                                CornerRadius="10"
+                                FontSize="13"
+                                HeightRequest="44"
+                                Clicked="OnVerDatasetMarketingClicked" />
+                        <Button Grid.Column="1"
+                                Text="📄 Informe"
+                                BackgroundColor="#8B5CF6"
+                                TextColor="White"
+                                CornerRadius="10"
+                                FontSize="13"
+                                HeightRequest="44"
+                                Clicked="OnVerInformeMarketingClicked" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- DATASET 3: FINANZAS -->
+            <Frame BackgroundColor="{DynamicResource TemaTarjeta}"
+                   BorderColor="#10B981"
+                   CornerRadius="14" Padding="20" HasShadow="True">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="💰 TRANSACCIONES FINANCIERAS"
+                           FontSize="11" FontAttributes="Bold"
+                           TextColor="#10B981" />
+
+                    <Frame BackgroundColor="#0D2137"
+                           BorderColor="#2D4A6A"
+                           CornerRadius="10" Padding="16" HasShadow="False">
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Finanzas_Trimestrales_2024.csv"
+                                   FontSize="15" FontAttributes="Bold"
+                                   TextColor="White" />
+                            <Label Text="💵 Transacciones, ingresos y gastos por trimestre"
+                                   FontSize="12" TextColor="#94A3B8" />
+                            <Label Text="💼 Categorías, Departamentos, Presupuestos"
+                                   FontSize="12" TextColor="#94A3B8" />
+                            <Label Text="🔢 600 registros · 7 columnas"
+                                   FontSize="11" TextColor="{DynamicResource TemaSubtexto}" />
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Button Grid.Column="0"
+                                Text="📂 Dataset"
+                                BackgroundColor="#334155"
+                                TextColor="White"
+                                CornerRadius="10"
+                                FontSize="13"
+                                HeightRequest="44"
+                                Clicked="OnVerDatasetFinanzasClicked" />
+                        <Button Grid.Column="1"
+                                Text="📄 Informe"
+                                BackgroundColor="#10B981"
+                                TextColor="White"
+                                CornerRadius="10"
+                                FontSize="13"
+                                HeightRequest="44"
+                                Clicked="OnVerInformeFinanzasClicked" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Información adicional -->
+            <Frame BackgroundColor="{DynamicResource TemaTarjeta}"
+                   BorderColor="#16A34A"
+                   CornerRadius="14" Padding="16" HasShadow="True">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="✨ Características incluidas en la demo:"
+                           FontSize="13" FontAttributes="Bold"
+                           TextColor="#4ADE80" />
+                    <Label Text="• Visualización de datasets completos"
+                           FontSize="12" TextColor="White" />
+                    <Label Text="• Informes PDF con estadísticas detalladas"
+                           FontSize="12" TextColor="White" />
+                    <Label Text="• Gráficos y análisis de datos"
+                           FontSize="12" TextColor="White" />
+                    <Label Text="• Exportación de informes"
+                           FontSize="12" TextColor="White" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Llamada a acción -->
+            <Frame BackgroundColor="#1E293B"
+                   BorderColor="#60A5FA"
+                   CornerRadius="14" Padding="18" HasShadow="True">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="¿Te gusta lo que ves?"
+                           FontSize="16" FontAttributes="Bold"
+                           TextColor="White"
+                           HorizontalTextAlignment="Center" />
+                    <Label Text="Regístrate para analizar tus propios datasets y generar informes personalizados"
+                           FontSize="12" TextColor="#94A3B8"
+                           HorizontalTextAlignment="Center" />
+                    <Button Text="📝  Crear cuenta ahora"
+                            BackgroundColor="#16A34A"
+                            TextColor="White"
+                            CornerRadius="10"
+                            FontSize="14"
+                            FontAttributes="Bold"
+                            HeightRequest="46"
+                            Clicked="OnRegistrarseClicked" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Botón volver -->
+            <Button Text="← Volver al inicio"
+                    BackgroundColor="Transparent"
+                    BorderColor="{DynamicResource TemaBorde}"
+                    BorderWidth="1"
+                    TextColor="{DynamicResource TemaSubtexto}"
+                    CornerRadius="10" FontSize="13"
+                    HeightRequest="44"
+                    Clicked="OnVolverClicked" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

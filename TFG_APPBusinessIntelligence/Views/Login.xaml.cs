@@ -22,5 +22,11 @@ namespace TFG_APPBusinessIntelligence.Views
 			await Navigation.PushAsync(registro!);
 		}
 
+		private async void OnProbarDemoClicked(object sender, EventArgs e)
+		{
+			// Navegar a la página de demostración
+			await Navigation.PushAsync(new ProbarDemo());
+		}
+
 	}
 }

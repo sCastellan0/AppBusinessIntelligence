@@ -2,6 +2,7 @@
 using TFG_APPBusinessIntelligence.Services;
 using TFG_APPBusinessIntelligence.Views;
 using ZXing.Net.Maui.Controls;
+using Plugin.LocalNotification;
 #if ANDROID
 using TFG_APPBusinessIntelligence.Platforms.Android;
 #endif
@@ -16,6 +17,7 @@ namespace TFG_APPBusinessIntelligence
             builder
                 .UseMauiApp<App>()
                 .UseBarcodeReader()
+                .UseLocalNotification()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

@@ -1,4 +1,6 @@
 using TFG_APPBusinessIntelligence.Services;
+using Plugin.LocalNotification;
+using Plugin.LocalNotification.AndroidOption;
 
 namespace TFG_APPBusinessIntelligence.Views
 {
@@ -10,6 +12,8 @@ namespace TFG_APPBusinessIntelligence.Views
 
         private string? _rutaArchivoSeleccionado;
         private string? _rutaPdfGenerado;
+        private bool _procesoEnCurso = false;
+        private CancellationTokenSource? _cts;
 
         private static readonly string[] TiposPermitidos = { ".csv", ".tsv", ".xlsx", ".xls", ".json" };
 
@@ -60,6 +64,7 @@ namespace TFG_APPBusinessIntelligence.Views
                 InfoArchivoLabel.IsVisible   = true;
 
                 GenerarBtn.IsEnabled         = true;
+                VerDatasetBtn.IsVisible      = true;  // Mostrar botón Ver Dataset
                 ResultadoFrame.IsVisible     = false;
                 ErrorFrame.IsVisible         = false;
             }
@@ -81,81 +86,161 @@ namespace TFG_APPBusinessIntelligence.Views
             ErrorFrame.IsVisible     = false;
             Spinner.IsRunning        = true;
             BarraProgreso.Progress   = 0;
+            _procesoEnCurso          = true;
+            _cts                     = new CancellationTokenSource();
 
+            // Iniciar generación en segundo plano
+            _ = GenerarInformeEnSegundoPlanoAsync(_rutaArchivoSeleccionado, _cts.Token);
+        }
+
+        private async Task GenerarInformeEnSegundoPlanoAsync(string rutaArchivo, CancellationToken token)
+        {
             try
             {
                 // Paso 1 – Cargar y analizar
-                EstadoLabel.Text = "Cargando dataset…";
-                await BarraProgreso.ProgressTo(0.25, 200, Easing.Linear);
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    EstadoLabel.Text = "Cargando dataset…";
+                    BarraProgreso.ProgressTo(0.25, 200, Easing.Linear);
+                });
 
-                var resultado = await Task.Run(() => _analyzerService.Analizar(_rutaArchivoSeleccionado));
+                var resultado = await Task.Run(() => _analyzerService.Analizar(rutaArchivo), token);
 
-                EstadoLabel.Text = "Calculando estadísticas…";
-                await BarraProgreso.ProgressTo(0.6, 300, Easing.Linear);
+                if (token.IsCancellationRequested) return;
+
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    EstadoLabel.Text = "Calculando estadísticas…";
+                    BarraProgreso.ProgressTo(0.6, 300, Easing.Linear);
+                });
 
                 // Paso 2 – Generar PDF en caché temporal
-                EstadoLabel.Text = "Generando PDF…";
-                string nombrePdf = $"informe_{Path.GetFileNameWithoutExtension(resultado.NombreArchivo)}.pdf";
-                string tempPdf   = await Task.Run(() => _pdfService.GenerarPdf(resultado, FileSystem.CacheDirectory));
+                MainThread.BeginInvokeOnMainThread(() => EstadoLabel.Text = "Generando PDF…");
 
-                await BarraProgreso.ProgressTo(0.85, 200, Easing.Linear);
+                string nombrePdf = $"informe_{Path.GetFileNameWithoutExtension(resultado.NombreArchivo)}.pdf";
+                string tempPdf   = await Task.Run(() => _pdfService.GenerarPdf(resultado, FileSystem.CacheDirectory), token);
+
+                if (token.IsCancellationRequested) return;
+
+                MainThread.BeginInvokeOnMainThread(() => BarraProgreso.ProgressTo(0.85, 200, Easing.Linear));
 
                 // Paso 3 – Mover al destino elegido por el usuario
-                EstadoLabel.Text = "Guardando informe…";
+                MainThread.BeginInvokeOnMainThread(() => EstadoLabel.Text = "Guardando informe…");
+
                 string rutaPdf = await _fileSaverService.SavePdfAsync(tempPdf, nombrePdf);
 
                 // Limpiar temporal si es distinto del destino
                 if (tempPdf != rutaPdf && File.Exists(tempPdf))
                     File.Delete(tempPdf);
 
-                await BarraProgreso.ProgressTo(1.0, 150, Easing.Linear);
+                if (token.IsCancellationRequested) return;
+
+                MainThread.BeginInvokeOnMainThread(() => BarraProgreso.ProgressTo(1.0, 150, Easing.Linear));
 
                 // Éxito
-                _rutaPdfGenerado         = rutaPdf;
-                ProgresoFrame.IsVisible  = false;
-                ResultadoFrame.IsVisible = true;
-                RutaPdfLabel.Text        = rutaPdf;
+                _rutaPdfGenerado = rutaPdf;
 
-                if (AbrirPdfSwitch.IsToggled)
-                    AbrirPdf(rutaPdf);
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    ProgresoFrame.IsVisible  = false;
+                    ResultadoFrame.IsVisible = true;
+                    RutaPdfLabel.Text        = rutaPdf;
+                });
+
+                // Enviar notificación si el usuario salió de la vista
+                await EnviarNotificacionInformeCompletadoAsync(nombrePdf);
             }
             catch (Exception ex)
             {
-                ProgresoFrame.IsVisible = false;
-                ErrorFrame.IsVisible    = true;
-                ErrorLabel.Text         = ex.Message;
+                if (!token.IsCancellationRequested)
+                {
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        ProgresoFrame.IsVisible = false;
+                        ErrorFrame.IsVisible    = true;
+                        ErrorLabel.Text         = ex.Message;
+                    });
+                }
             }
             finally
             {
-                Spinner.IsRunning    = false;
-                GenerarBtn.IsEnabled = true;
-            }
-        }
-
-        // ── Abrir PDF ─────────────────────────────────────────────────────────
-        private void OnAbrirPdfClicked(object sender, EventArgs e)
-        {
-            if (!string.IsNullOrEmpty(_rutaPdfGenerado))
-                AbrirPdf(_rutaPdfGenerado);
-        }
-
-        private static void AbrirPdf(string ruta)
-        {
-            try
-            {
-                Launcher.Default.OpenAsync(new OpenFileRequest
+                MainThread.BeginInvokeOnMainThread(() =>
                 {
-                    File = new ReadOnlyFile(ruta)
+                    Spinner.IsRunning    = false;
+                    GenerarBtn.IsEnabled = true;
+                    _procesoEnCurso      = false;
                 });
             }
-            catch
+        }
+
+        private async Task EnviarNotificacionInformeCompletadoAsync(string nombrePdf)
+        {
+            // Solo enviar notificación si el usuario ha salido de la vista
+            await Task.Delay(500); // Pequeña espera para asegurar que la UI se actualice
+
+            var request = new NotificationRequest
             {
-                // Si no hay visor de PDF instalado, silenciosamente ignora
-            }
+                NotificationId = 1001,
+                Title = "📊 Informe completado",
+                Description = $"El informe '{nombrePdf}' se ha generado correctamente",
+                CategoryType = NotificationCategoryType.Status,
+                Android = new AndroidOptions
+                {
+                    IconSmallName = new AndroidIcon("appicon"),
+                    AutoCancel = true,
+                    Priority = AndroidPriority.High
+                }
+            };
+
+            await LocalNotificationCenter.Current.Show(request);
         }
 
         // ── Volver ────────────────────────────────────────────────────────────
         private async void OnVolverClicked(object sender, EventArgs e)
-            => await Navigation.PopAsync();
+        {
+            // Si hay un proceso en curso, mostrar diálogo personalizado
+            if (_procesoEnCurso)
+            {
+                var dialogo = new DialogoConfirmacion(
+                    "Proceso en curso",
+                    "El informe se está generando. Si sales ahora, recibirás una notificación cuando termine.\n\n¿Deseas salir?",
+                    "Salir",
+                    "Quedarme");
+
+                await Navigation.PushModalAsync(dialogo);
+                bool continuar = await dialogo.MostrarAsync();
+
+                if (!continuar)
+                    return;
+            }
+
+            await Navigation.PopAsync();
+        }
+
+        // ── Ver Dataset ───────────────────────────────────────────────────────
+        private async void OnVerDatasetClicked(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(_rutaArchivoSeleccionado))
+                return;
+
+            try
+            {
+                // Abrir el archivo con el visor predeterminado del sistema
+                await Launcher.Default.OpenAsync(new OpenFileRequest
+                {
+                    File = new ReadOnlyFile(_rutaArchivoSeleccionado)
+                });
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"No se pudo abrir el archivo:\n{ex.Message}", "Aceptar");
+            }
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            // No cancelamos el proceso, dejamos que continúe en segundo plano
+        }
     }
 }
