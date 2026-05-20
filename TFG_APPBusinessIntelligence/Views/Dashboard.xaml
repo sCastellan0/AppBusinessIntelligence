@@ -89,6 +89,9 @@
                            HeightRequest="120"
                            VerticalOptions="Start"
                            HorizontalOptions="Center">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnCarpetaTapped" />
+                        </Frame.GestureRecognizers>
                         <Label Text="📁" 
                                FontSize="50" 
                                TextColor="#5A7FA5"
@@ -137,7 +140,7 @@
             </VerticalStackLayout>
         </ScrollView>
 
-        <!-- Boton Ver datos -->
+        <!-- Botón Ver datos -->
         <Button Grid.Row="2"
                 Text="Ver datos" 
                 BackgroundColor="#4A6FA5" 
@@ -145,9 +148,9 @@
                 FontSize="16"
                 FontAttributes="Bold"
                 CornerRadius="8"
-                WidthRequest="150"
                 HeightRequest="45"
                 HorizontalOptions="Center"
+                WidthRequest="180"
                 Margin="0,0,0,30"
                 Clicked="OnVerDatosClicked"/>
 

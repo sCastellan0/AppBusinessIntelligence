@@ -16,6 +16,38 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+        <!-- Toast carpeta guardada -->
+        <Border x:Name="ToastCarpeta"
+                Grid.RowSpan="2"
+                BackgroundColor="#1E4620"
+                StrokeShape="RoundRectangle 14"
+                Stroke="#2D6A30"
+                StrokeThickness="1"
+                Padding="16,12"
+                HorizontalOptions="Center"
+                VerticalOptions="End"
+                Margin="0,0,0,28"
+                Opacity="0"
+                IsVisible="False"
+                ZIndex="10">
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                <Label Grid.Column="0"
+                       Text="✅"
+                       FontSize="20"
+                       VerticalOptions="Center"/>
+                <VerticalStackLayout Grid.Column="1" Spacing="1" VerticalOptions="Center">
+                    <Label Text="Carpeta guardada"
+                           FontSize="13"
+                           FontAttributes="Bold"
+                           TextColor="White"/>
+                    <Label x:Name="ToastCarpetaRuta"
+                           FontSize="11"
+                           TextColor="#A7F3A0"
+                           LineBreakMode="TailTruncation"/>
+                </VerticalStackLayout>
+            </Grid>
+        </Border>
+
         <!-- Cabecera -->
         <Grid Grid.Row="0" Margin="0,20,0,30">
             <Grid.ColumnDefinitions>
@@ -43,7 +75,8 @@
         </Grid>
 
         <!-- Opciones -->
-        <VerticalStackLayout Grid.Row="1" Spacing="14">
+        <ScrollView Grid.Row="1" VerticalScrollBarVisibility="Never">
+        <VerticalStackLayout Spacing="14" Padding="0,0,0,20">
 
             <!-- Sección Apariencia -->
             <Label Text="APARIENCIA"
@@ -193,6 +226,56 @@
                 </Grid>
             </Frame>
 
+            <!-- Sección Informes -->
+            <Label Text="INFORMES"
+                   FontSize="11"
+                   FontAttributes="Bold"
+                   TextColor="{DynamicResource TemaAccent}"
+                   Margin="4,0,0,4"
+                   CharacterSpacing="2"/>
+
+            <!-- Tarjeta carpeta de informes -->
+            <Frame BackgroundColor="{DynamicResource TemaTarjeta}"
+                   BorderColor="{DynamicResource TemaBorde}"
+                   CornerRadius="12"
+                   Padding="16"
+                   HasShadow="False">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnSeleccionarCarpetaInformesTapped" />
+                </Frame.GestureRecognizers>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0"
+                           Text="📂"
+                           FontSize="30"
+                           VerticalOptions="Center"
+                           Margin="0,0,14,0"/>
+
+                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                        <Label Text="Carpeta de informes PDF"
+                               FontSize="15"
+                               FontAttributes="Bold"
+                               TextColor="White"/>
+                        <Label x:Name="CarpetaInformesLabel"
+                               Text="No configurada"
+                               FontSize="12"
+                               TextColor="{DynamicResource TemaSubtexto}"
+                               LineBreakMode="TailTruncation"/>
+                    </VerticalStackLayout>
+
+                    <Label Grid.Column="2"
+                           Text="›"
+                           FontSize="24"
+                           TextColor="{DynamicResource TemaAccentOscuro}"
+                           VerticalOptions="Center"/>
+                </Grid>
+            </Frame>
+
             <!-- Sección Seguridad -->
             <Label Text="SEGURIDAD"
                    FontSize="11"
@@ -282,5 +365,6 @@
             </Frame>
 
         </VerticalStackLayout>
+        </ScrollView>
     </Grid>
 </ContentPage>

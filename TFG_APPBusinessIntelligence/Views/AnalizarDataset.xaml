@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TFG_APPBusinessIntelligence.Views.AnalizarDataset"
+             Title=""
+             Shell.NavBarIsVisible="False">
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="{DynamicResource TemaGradienteInicio}" Offset="0.0" />
+            <GradientStop Color="{DynamicResource TemaGradienteFin}"   Offset="1.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24,48,24,32" Spacing="16">
+
+            <!-- Banner superior -->
+            <Frame BackgroundColor="#1E3A5F" CornerRadius="14" Padding="20,14" HasShadow="True">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="📊 Analizador de Datasets"
+                           FontSize="20" FontAttributes="Bold"
+                           TextColor="White" HorizontalOptions="Center" />
+                    <Label Text="Selecciona un archivo CSV, Excel o JSON para generar un informe PDF detallado"
+                           FontSize="12" TextColor="#94A3B8"
+                           HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Tarjeta selección de archivo -->
+            <Frame BackgroundColor="{DynamicResource TemaTarjeta}"
+                   BorderColor="{DynamicResource TemaBorde}"
+                   CornerRadius="14" Padding="20" HasShadow="True">
+                <VerticalStackLayout Spacing="12">
+
+                    <Label Text="ARCHIVO" FontSize="11" FontAttributes="Bold"
+                           TextColor="{DynamicResource TemaSubtexto}" />
+
+                    <Frame x:Name="ArchivoFrame"
+                           BackgroundColor="#0D2137"
+                           BorderColor="#2D4A6A"
+                           CornerRadius="10" Padding="14,12" HasShadow="False">
+                        <VerticalStackLayout Spacing="4">
+                            <Label x:Name="NombreArchivoLabel"
+                                   Text="Ningún archivo seleccionado"
+                                   FontSize="13" TextColor="#94A3B8"
+                                   HorizontalOptions="Center" />
+                            <Label x:Name="InfoArchivoLabel"
+                                   Text="" FontSize="11"
+                                   TextColor="{DynamicResource TemaSubtexto}"
+                                   HorizontalOptions="Center"
+                                   IsVisible="False" />
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <Button Text="📂  Seleccionar archivo"
+                            BackgroundColor="#334155"
+                            TextColor="White"
+                            CornerRadius="10"
+                            FontSize="14"
+                            HeightRequest="46"
+                            Clicked="OnSeleccionarArchivoClicked" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Tarjeta opciones -->
+            <Frame BackgroundColor="{DynamicResource TemaTarjeta}"
+                   BorderColor="{DynamicResource TemaBorde}"
+                   CornerRadius="14" Padding="20" HasShadow="True">
+                <VerticalStackLayout Spacing="12">
+
+                    <Label Text="OPCIONES" FontSize="11" FontAttributes="Bold"
+                           TextColor="{DynamicResource TemaSubtexto}" />
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Switch x:Name="AbrirPdfSwitch" IsToggled="True"
+                                OnColor="{DynamicResource TemaAccent}" />
+                        <Label Text="Abrir PDF al terminar" TextColor="White"
+                               FontSize="13" VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Botón generar -->
+            <Button x:Name="GenerarBtn"
+                    Text="✨  Generar Informe PDF"
+                    BackgroundColor="{DynamicResource TemaAccent}"
+                    TextColor="White"
+                    CornerRadius="12"
+                    FontSize="15" FontAttributes="Bold"
+                    HeightRequest="52"
+                    IsEnabled="False"
+                    Clicked="OnGenerarInformeClicked" />
+
+            <!-- Progreso -->
+            <Frame x:Name="ProgresoFrame"
+                   BackgroundColor="{DynamicResource TemaTarjeta}"
+                   BorderColor="{DynamicResource TemaBorde}"
+                   CornerRadius="14" Padding="20" HasShadow="True"
+                   IsVisible="False">
+                <VerticalStackLayout Spacing="10">
+                    <ActivityIndicator x:Name="Spinner" IsRunning="False"
+                                       Color="{DynamicResource TemaAccent}"
+                                       HeightRequest="36" />
+                    <Label x:Name="EstadoLabel"
+                           Text="Analizando dataset…"
+                           TextColor="White" FontSize="13"
+                           HorizontalOptions="Center" />
+                    <ProgressBar x:Name="BarraProgreso"
+                                 Progress="0"
+                                 ProgressColor="{DynamicResource TemaAccent}"
+                                 HeightRequest="6" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Resultado -->
+            <Frame x:Name="ResultadoFrame"
+                   BackgroundColor="{DynamicResource TemaTarjeta}"
+                   BorderColor="#16A34A"
+                   CornerRadius="14" Padding="20" HasShadow="True"
+                   IsVisible="False">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="✅ Informe generado correctamente"
+                           TextColor="#4ADE80" FontSize="15" FontAttributes="Bold"
+                           HorizontalOptions="Center" />
+                    <Label x:Name="RutaPdfLabel"
+                           TextColor="#94A3B8" FontSize="11"
+                           HorizontalTextAlignment="Center" />
+                    <Button Text="📄  Abrir PDF"
+                            BackgroundColor="#16A34A"
+                            TextColor="White" CornerRadius="10"
+                            FontSize="13" HeightRequest="42"
+                            Clicked="OnAbrirPdfClicked" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Error -->
+            <Frame x:Name="ErrorFrame"
+                   BackgroundColor="#1F0A0A"
+                   BorderColor="#DC2626"
+                   CornerRadius="14" Padding="16" HasShadow="True"
+                   IsVisible="False">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="❌ Error al generar el informe"
+                           TextColor="#F87171" FontSize="13" FontAttributes="Bold" />
+                    <Label x:Name="ErrorLabel"
+                           TextColor="#FCA5A5" FontSize="11" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Botón volver -->
+            <Button Text="← Volver"
+                    BackgroundColor="Transparent"
+                    BorderColor="{DynamicResource TemaBorde}"
+                    BorderWidth="1"
+                    TextColor="{DynamicResource TemaSubtexto}"
+                    CornerRadius="10" FontSize="13"
+                    HeightRequest="44"
+                    Clicked="OnVolverClicked" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

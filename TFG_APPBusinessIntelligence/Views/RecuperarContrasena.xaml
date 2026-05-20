@@ -6,79 +6,113 @@
     <ContentPage.Background>
         <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
             <GradientStop Color="{DynamicResource TemaGradienteInicio}" Offset="0.0" />
-            <GradientStop Color="{DynamicResource TemaGradienteFin}" Offset="1.0" />
+            <GradientStop Color="{DynamicResource TemaGradienteFin}"   Offset="1.0" />
         </LinearGradientBrush>
     </ContentPage.Background>
 
-    <VerticalStackLayout Spacing="20"
-                         Padding="30"
-                         VerticalOptions="Center"
-                         HorizontalOptions="Fill">
+    <Grid>
 
-        <!-- Icono -->
-        <Label Text="🔑"
-               FontSize="52"
-               HorizontalOptions="Center"/>
+        <VerticalStackLayout Spacing="20"
+                             Padding="30"
+                             VerticalOptions="Center"
+                             HorizontalOptions="Fill">
 
-        <!-- Título -->
-        <Label Text="Recuperar contraseña"
-               FontSize="24"
-               FontAttributes="Bold"
-               TextColor="White"
-               HorizontalOptions="Center"
-               HorizontalTextAlignment="Center"/>
+            <!-- Icono -->
+            <Label Text="🔑"
+                   FontSize="52"
+                   HorizontalOptions="Center"/>
 
-        <!-- Descripción -->
-        <Label Text="Introduce tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña."
-               FontSize="14"
-               TextColor="#BDC3C7"
-               HorizontalOptions="Center"
-               HorizontalTextAlignment="Center"
-               Margin="0,0,0,10"/>
+            <!-- Título -->
+            <Label Text="Recuperar contraseña"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   TextColor="White"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center"/>
 
-        <!-- Campo correo -->
-        <Label Text="Correo electrónico"
-               FontSize="14"
-               TextColor="White"
-               Margin="0,0,0,5"/>
-
-        <Frame BackgroundColor="White"
-               BorderColor="#BDC3C7"
-               CornerRadius="8"
-               Padding="0"
-               HasShadow="False">
-            <Entry x:Name="CorreoEntry"
-                   Placeholder="Ingrese su correo electrónico"
-                   PlaceholderColor="#BDC3C7"
+            <!-- Descripción -->
+            <Label Text="Introduce tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña."
                    FontSize="14"
-                   BackgroundColor="Transparent"
-                   TextColor="#2C3E50"
-                   Margin="12,10"
-                   Keyboard="Email"/>
-        </Frame>
+                   TextColor="#BDC3C7"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center"
+                   Margin="0,0,0,10"/>
 
-        <!-- Botón enviar -->
-        <Button Text="Enviar correo de recuperación"
-                BackgroundColor="#3B82F6"
-                TextColor="White"
-                FontSize="15"
-                FontAttributes="Bold"
-                CornerRadius="8"
-                HeightRequest="48"
-                Margin="0,10,0,0"
-                Clicked="OnEnviarClicked"/>
+            <!-- Campo correo -->
+            <Label Text="Correo electrónico"
+                   FontSize="14"
+                   TextColor="White"
+                   Margin="0,0,0,5"/>
 
-        <!-- Volver -->
-        <Label Text="← Volver al inicio de sesión"
-               FontSize="14"
-               TextColor="#93C5FD"
-               HorizontalOptions="Center"
-               TextDecorations="Underline"
-               Margin="0,8,0,0">
-            <Label.GestureRecognizers>
-                <TapGestureRecognizer Tapped="OnVolverTapped"/>
-            </Label.GestureRecognizers>
-        </Label>
+            <Frame BackgroundColor="White"
+                   BorderColor="#BDC3C7"
+                   CornerRadius="8"
+                   Padding="0"
+                   HasShadow="False">
+                <Entry x:Name="CorreoEntry"
+                       Placeholder="Ingrese su correo electrónico"
+                       PlaceholderColor="#BDC3C7"
+                       FontSize="14"
+                       BackgroundColor="Transparent"
+                       TextColor="#2C3E50"
+                       Margin="12,10"
+                       Keyboard="Email"/>
+            </Frame>
 
-    </VerticalStackLayout>
+            <!-- Botón enviar -->
+            <Button Text="Enviar correo de recuperación"
+                    BackgroundColor="#3B82F6"
+                    TextColor="White"
+                    FontSize="15"
+                    FontAttributes="Bold"
+                    CornerRadius="8"
+                    HeightRequest="48"
+                    Margin="0,10,0,0"
+                    Clicked="OnEnviarClicked"/>
+
+            <!-- Volver -->
+            <Label Text="← Volver al inicio de sesión"
+                   FontSize="14"
+                   TextColor="#93C5FD"
+                   HorizontalOptions="Center"
+                   TextDecorations="Underline"
+                   Margin="0,8,0,0">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnVolverTapped"/>
+                </Label.GestureRecognizers>
+            </Label>
+
+        </VerticalStackLayout>
+
+        <!-- Banner de correo enviado -->
+        <Border x:Name="BannerExito"
+                BackgroundColor="#1E4620"
+                StrokeShape="RoundRectangle 16"
+                Stroke="#2D6A30"
+                StrokeThickness="1"
+                Padding="20,16"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                MaximumWidthRequest="320"
+                Opacity="0"
+                IsVisible="False"
+                ZIndex="10">
+            <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+                <Label Text="✉️"
+                       FontSize="40"
+                       HorizontalOptions="Center"/>
+                <Label Text="Correo enviado"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       HorizontalOptions="Center"/>
+                <Label Text="Se ha enviado un correo con las instrucciones para restablecer tu contraseña."
+                       FontSize="13"
+                       TextColor="#A7F3A0"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"/>
+            </VerticalStackLayout>
+        </Border>
+
+    </Grid>
 </ContentPage>

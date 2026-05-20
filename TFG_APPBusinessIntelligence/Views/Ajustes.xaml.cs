@@ -8,18 +8,21 @@ namespace TFG_APPBusinessIntelligence.Views
         private readonly DatabaseService _databaseService;
         private readonly TotpService _totpService;
         private readonly ThemeService _themeService;
+        private readonly IFolderPickerService _folderPickerService;
         private bool _cargandoNotif = false;
         private bool _cargandoAlmacen = false;
 
         private const string ClaveNotifActivas = "notificaciones_activas";
+        private const string PrefCarpeta = "carpeta_informes";
 
-        public Ajustes(FirebaseAuthService firebaseAuthService, DatabaseService databaseService, TotpService totpService, ThemeService themeService)
+        public Ajustes(FirebaseAuthService firebaseAuthService, DatabaseService databaseService, TotpService totpService, ThemeService themeService, IFolderPickerService folderPickerService)
         {
             InitializeComponent();
             _firebaseAuthService = firebaseAuthService;
             _databaseService = databaseService;
             _totpService = totpService;
             _themeService = themeService;
+            _folderPickerService = folderPickerService;
         }
 
         protected override async void OnAppearing()
@@ -29,6 +32,42 @@ namespace TFG_APPBusinessIntelligence.Views
             await SincronizarEstadoNotificacionesAsync();
             await SincronizarEstadoAlmacenamientoAsync();
             ActualizarBotonesTema();
+            ActualizarEtiquetaCarpeta();
+        }
+
+        private void ActualizarEtiquetaCarpeta()
+        {
+            var carpeta = Preferences.Default.Get(PrefCarpeta, string.Empty);
+            CarpetaInformesLabel.Text = string.IsNullOrEmpty(carpeta) ? "No configurada" : carpeta;
+        }
+
+        private async void OnSeleccionarCarpetaInformesTapped(object sender, TappedEventArgs e)
+        {
+            try
+            {
+                string? carpeta = await _folderPickerService.PickFolderAsync();
+                if (string.IsNullOrEmpty(carpeta)) return;
+
+                Preferences.Default.Set(PrefCarpeta, carpeta);
+                ActualizarEtiquetaCarpeta();
+                await MostrarToastCarpeta(carpeta);
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"No se pudo seleccionar la carpeta:\n{ex.Message}", "Aceptar");
+            }
+        }
+
+        private async Task MostrarToastCarpeta(string carpeta)
+        {
+            ToastCarpetaRuta.Text = carpeta;
+            ToastCarpeta.IsVisible = true;
+
+            await ToastCarpeta.FadeTo(1, 250, Easing.CubicOut);
+            await Task.Delay(2500);
+            await ToastCarpeta.FadeTo(0, 400, Easing.CubicIn);
+
+            ToastCarpeta.IsVisible = false;
         }
 
         private void ActualizarBotonesTema()

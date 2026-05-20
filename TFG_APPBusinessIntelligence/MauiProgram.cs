@@ -35,6 +35,12 @@ namespace TFG_APPBusinessIntelligence
             builder.Services.AddSingleton<TotpService>();
             builder.Services.AddSingleton<InactivityService>();
             builder.Services.AddSingleton<ThemeService>();
+            builder.Services.AddSingleton<DatasetAnalyzerService>();
+            builder.Services.AddSingleton<GeneradorPdfService>();
+#if ANDROID || WINDOWS
+            builder.Services.AddSingleton<IFolderPickerService, FolderPickerService>();
+            builder.Services.AddSingleton<IFileSaverService, FileSaverService>();
+#endif
 
             // Registrar páginas
             builder.Services.AddTransient<InicioSesion>();
@@ -44,6 +50,8 @@ namespace TFG_APPBusinessIntelligence
             builder.Services.AddTransient<RecuperarContrasena>();
             builder.Services.AddTransient<CambiarContrasena>();
             builder.Services.AddTransient<SesionExpiradaPopup>();
+            builder.Services.AddTransient<AnalizarDataset>();
+            builder.Services.AddTransient<VerInformes>();
 
 #if DEBUG
             builder.Logging.AddDebug();

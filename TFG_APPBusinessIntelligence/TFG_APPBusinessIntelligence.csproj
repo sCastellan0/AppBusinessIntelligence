@@ -61,11 +61,18 @@
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
 
+		<!-- Fuentes también como EmbeddedResource para PdfSharpCore en Android -->
+		<EmbeddedResource Include="Resources\Fonts\OpenSans-Regular.ttf" />
+		<EmbeddedResource Include="Resources\Fonts\OpenSans-Semibold.ttf" />
+
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="ExcelDataReader" Version="3.7.0" />
+		<PackageReference Include="ExcelDataReader.DataSet" Version="3.7.0" />
+		<PackageReference Include="PdfSharpCore" Version="1.3.65" />
 		<PackageReference Include="FirebaseAuthentication.net" Version="4.1.0" />
 		<PackageReference Include="FirebaseDatabase.net" Version="5.0.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
@@ -94,10 +101,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Views\Ajustes.xaml">
-	    <Generator>MSBuild:Compile</Generator>
+	  <MauiXaml Update="Views\AnalizarDataset.xaml">
+		<Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\CambiarContrasena.xaml">
+	  <MauiXaml Update="Views\VerInformes.xaml">
+		<Generator>MSBuild:Compile</Generator>
+		<Inflator>Runtime</Inflator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Ajustes.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Configuracion2FA.xaml">
@@ -131,6 +142,9 @@
 		<Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Verificacion2FA.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\VerInformes.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

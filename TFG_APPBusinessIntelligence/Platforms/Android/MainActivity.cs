@@ -1,4 +1,5 @@
 ﻿using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Views;
@@ -13,6 +14,9 @@ namespace TFG_APPBusinessIntelligence
     public class MainActivity : MauiAppCompatActivity
     {
         private const int RequestCodePermisos = 100;
+        internal const int RequestCodeFolderPicker = 9001;
+
+        internal static Action<Android.Net.Uri?>? FolderPickerCallback { get; set; }
 
         protected override void OnCreate(Bundle? savedInstanceState)
         {
@@ -74,6 +78,19 @@ namespace TFG_APPBusinessIntelligence
         {
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             // Resultado gestionado por MAUI Permissions internamente
+        }
+
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent? data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+
+            if (requestCode == RequestCodeFolderPicker)
+            {
+                var uri = resultCode == Result.Ok ? data?.Data : null;
+                var callback = FolderPickerCallback;
+                FolderPickerCallback = null;
+                callback?.Invoke(uri);
+            }
         }
 
         public override bool DispatchTouchEvent(MotionEvent? ev)
