@@ -76,118 +76,87 @@ namespace TFG_APPBusinessIntelligence.Services
             try
             {
                 var uriStr = Preferences.Default.Get("carpeta_informes_uri", string.Empty);
+                if (string.IsNullOrEmpty(uriStr))
+                    return Task.FromResult(lista);
 
-                if (!string.IsNullOrEmpty(uriStr))
+                var treeUri = Android.Net.Uri.Parse(uriStr);
+                if (treeUri == null)
+                    return Task.FromResult(lista);
+
+                var context = Platform.AppContext;
+                var resolver = context.ContentResolver;
+                if (resolver == null)
+                    return Task.FromResult(lista);
+
+                // Verificar permisos persistentes
+                if (!VerificarPermisoPersistente(context, treeUri))
                 {
-                    var treeUri = Android.Net.Uri.Parse(uriStr);
-                    if (treeUri == null)
+                    if (!TomarPermisoPersistente(context, treeUri))
                     {
-                        System.Diagnostics.Debug.WriteLine("[FileSaverService] URI de carpeta inválido");
+                        Preferences.Default.Remove("carpeta_informes_uri");
+                        Preferences.Default.Remove("carpeta_informes");
                         return Task.FromResult(lista);
-                    }
-
-                    var context = Platform.AppContext;
-                    var resolver = context.ContentResolver;
-                    if (resolver == null)
-                    {
-                        System.Diagnostics.Debug.WriteLine("[FileSaverService] No se pudo obtener ContentResolver");
-                        return Task.FromResult(lista);
-                    }
-
-                    // CRÍTICO: Verificar y tomar permisos persistentes si no los tenemos
-                    if (!VerificarPermisoPersistente(context, treeUri))
-                    {
-                        System.Diagnostics.Debug.WriteLine("[FileSaverService] No hay permiso persistente para el URI, intentando tomarlo...");
-                        if (!TomarPermisoPersistente(context, treeUri))
-                        {
-                            System.Diagnostics.Debug.WriteLine("[FileSaverService] ERROR: No se pudo tomar el permiso persistente. La carpeta debe ser reseleccionada.");
-                            // Limpiar preferencias para forzar reselección
-                            Preferences.Default.Remove("carpeta_informes_uri");
-                            Preferences.Default.Remove("carpeta_informes");
-                            return Task.FromResult(lista);
-                        }
-                    }
-
-                    var treeDocId = DocumentsContract.GetTreeDocumentId(treeUri);
-                    if (treeDocId != null)
-                    {
-                        var childrenUri = DocumentsContract.BuildChildDocumentsUriUsingTree(treeUri, treeDocId);
-                        if (childrenUri == null)
-                        {
-                            System.Diagnostics.Debug.WriteLine("[FileSaverService] No se pudo construir URI de hijos");
-                            return Task.FromResult(lista);
-                        }
-
-                        ICursor? cursor = null;
-                        try
-                        {
-                            cursor = resolver.Query(childrenUri,
-                                new[]
-                                {
-                                    DocumentsContract.Document.ColumnDocumentId,
-                                    DocumentsContract.Document.ColumnDisplayName,
-                                    DocumentsContract.Document.ColumnMimeType,
-                                    DocumentsContract.Document.ColumnLastModified,
-                                    DocumentsContract.Document.ColumnSize
-                                },
-                                null, null, null);
-
-                            if (cursor != null)
-                            {
-                                while (cursor.MoveToNext())
-                                {
-                                    var mime = cursor.GetString(2) ?? string.Empty;
-                                    var name = cursor.GetString(1) ?? string.Empty;
-
-                                    // Solo PDFs
-                                    if (mime != "application/pdf" &&
-                                        !name.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
-                                        continue;
-
-                                    var docId = cursor.GetString(0);
-                                    if (docId == null) continue;
-
-                                    var modified = cursor.GetLong(3);
-                                    var size = cursor.GetLong(4);
-
-                                    var fileUri = DocumentsContract.BuildDocumentUriUsingTree(treeUri, docId);
-                                    if (fileUri == null) continue;
-
-                                    var date = DateTimeOffset.FromUnixTimeMilliseconds(modified).LocalDateTime;
-                                    var kb = size / 1024.0;
-
-                                    lista.Add(new PdfEntry
-                                    {
-                                        Nombre = name,
-                                        Detalle = $"{date:dd/MM/yyyy HH:mm}  ·  {kb:F1} KB",
-                                        Token = fileUri.ToString()!
-                                    });
-                                }
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            System.Diagnostics.Debug.WriteLine($"[FileSaverService] Error al leer archivos: {ex.Message}");
-                            System.Diagnostics.Debug.WriteLine($"[FileSaverService] Tipo de excepción: {ex.GetType().Name}");
-                        }
-                        finally
-                        {
-                            cursor?.Close();
-                        }
-
-                        lista = lista.OrderByDescending(x => x.Detalle).ToList();
                     }
                 }
+
+                var treeDocId = DocumentsContract.GetTreeDocumentId(treeUri);
+                if (treeDocId == null)
+                    return Task.FromResult(lista);
+
+                var childrenUri = DocumentsContract.BuildChildDocumentsUriUsingTree(treeUri, treeDocId);
+                if (childrenUri == null)
+                    return Task.FromResult(lista);
+
+                using var cursor = resolver.Query(childrenUri,
+                    new[]
+                    {
+                DocumentsContract.Document.ColumnDocumentId,
+                DocumentsContract.Document.ColumnDisplayName,
+                DocumentsContract.Document.ColumnMimeType,
+                DocumentsContract.Document.ColumnLastModified,
+                DocumentsContract.Document.ColumnSize
+                    },
+                    null, null, null);
+
+                if (cursor == null)
+                    return Task.FromResult(lista);
+
+                while (cursor.MoveToNext())
+                {
+                    var mime = cursor.GetString(2) ?? "";
+                    var name = cursor.GetString(1) ?? "";
+
+                    if (mime != "application/pdf" &&
+                        !name.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
+                        continue;
+
+                    var docId = cursor.GetString(0);
+                    if (docId == null) continue;
+
+                    var fileUri = DocumentsContract.BuildDocumentUriUsingTree(treeUri, docId);
+                    if (fileUri == null) continue;
+
+                    var modified = cursor.GetLong(3);
+                    var size = cursor.GetLong(4);
+
+                    var date = DateTimeOffset.FromUnixTimeMilliseconds(modified).LocalDateTime;
+                    var kb = size / 1024.0;
+
+                    lista.Add(new PdfEntry
+                    {
+                        Nombre = name,
+                        Detalle = $"{date:dd/MM/yyyy HH:mm}  ·  {kb:F1} KB",
+                        Token = fileUri.ToString()
+                    });
+                }
+
+                return Task.FromResult(lista.OrderByDescending(x => x.Detalle).ToList());
             }
-            catch (Exception ex)
+            catch
             {
-                System.Diagnostics.Debug.WriteLine($"[FileSaverService] Error en ListPdfsAsync: {ex.Message}");
-                System.Diagnostics.Debug.WriteLine($"[FileSaverService] Stack trace: {ex.StackTrace}");
+                return Task.FromResult(lista);
             }
-
-            return Task.FromResult(lista);
         }
-
         // ── Verificar Permiso Persistente ─────────────────────────────────────
         private bool VerificarPermisoPersistente(Context context, Android.Net.Uri uri)
         {

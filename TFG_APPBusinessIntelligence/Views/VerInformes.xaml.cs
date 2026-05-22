@@ -24,22 +24,40 @@ namespace TFG_APPBusinessIntelligence.Views
         {
             try
             {
+                System.Diagnostics.Debug.WriteLine("[VerInformes] Iniciando carga de PDFs...");
                 var archivos = await _fileSaverService.ListPdfsAsync();
+                System.Diagnostics.Debug.WriteLine($"[VerInformes] PDFs encontrados: {archivos.Count}");
+
                 SinPdfsLayout.IsVisible = archivos.Count == 0;
                 ListaPdfs.ItemsSource   = archivos.Count > 0 ? archivos : null;
+
+                System.Diagnostics.Debug.WriteLine("[VerInformes] Carga completada exitosamente");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"[VerInformes] Error cargando PDFs: {ex.Message}");
-                System.Diagnostics.Debug.WriteLine($"[VerInformes] Stack trace: {ex.StackTrace}");
+                System.Diagnostics.Debug.WriteLine($"[VerInformes] ════════════ ERROR ════════════");
+                System.Diagnostics.Debug.WriteLine($"[VerInformes] Mensaje: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"[VerInformes] Tipo: {ex.GetType().Name}");
+                System.Diagnostics.Debug.WriteLine($"[VerInformes] Stack trace:");
+                System.Diagnostics.Debug.WriteLine(ex.StackTrace);
+                if (ex.InnerException != null)
+                {
+                    System.Diagnostics.Debug.WriteLine($"[VerInformes] Inner exception: {ex.InnerException.Message}");
+                }
+                System.Diagnostics.Debug.WriteLine($"[VerInformes] ════════════════════════════════");
 
                 // Mostrar como si no hubiera archivos para evitar crash
                 SinPdfsLayout.IsVisible = true;
                 ListaPdfs.ItemsSource = null;
 
-                await DisplayAlert("Error", 
-                    "Hubo un problema al cargar los informes. Verifica que la carpeta esté configurada correctamente en Ajustes.", 
-                    "Aceptar");
+                // Mostrar error detallado al usuario
+                var errorDialog = NotificacionDialog.Error(
+                    "Error al cargar informes",
+                    "No se pudieron cargar los informes. Verifica la configuración de la carpeta.",
+                    $"Detalles técnicos:\n{ex.GetType().Name}\n{ex.Message}\n\nRevisa los logs para más información.");
+
+                await Navigation.PushModalAsync(errorDialog, animated: true);
+                await errorDialog.MostrarAsync();
             }
         }
 

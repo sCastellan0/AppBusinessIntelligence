@@ -50,7 +50,7 @@ namespace TFG_APPBusinessIntelligence.Services
         {
             AsegurarFontResolver();
 
-            _doc  = new PdfDocument();
+            _doc = new PdfDocument();
             _nPag = 0;
 
             // Portada
@@ -67,18 +67,15 @@ namespace TFG_APPBusinessIntelligence.Services
             SeccionCorrelaciones(resultado);
             SeccionConclusiones(resultado);
 
-            // Guardar
-            string carpeta = carpetaDestino
-                ?? Path.GetDirectoryName(resultado.RutaArchivo)
-                ?? FileSystem.CacheDirectory;
+            // SIEMPRE guardar primero en caché interna (Android 11–16 lo exige)
+            string nombre = Path.GetFileNameWithoutExtension(resultado.NombreArchivo);
+            string tempPath = Path.Combine(FileSystem.CacheDirectory, $"informe_{nombre}.pdf");
 
-            string nombre   = Path.GetFileNameWithoutExtension(resultado.NombreArchivo);
-            string rutaPdf  = Path.Combine(carpeta, $"informe_{nombre}.pdf");
+            _doc.Save(tempPath);
 
-            _doc.Save(rutaPdf);
-            return rutaPdf;
+            // Devolver la ruta temporal (luego SavePdfAsync lo moverá a la carpeta del usuario)
+            return tempPath;
         }
-
         // ─────────────────────────────────────────────────────────────────────
         // GESTIoN DE PaGINAS
         // ─────────────────────────────────────────────────────────────────────
