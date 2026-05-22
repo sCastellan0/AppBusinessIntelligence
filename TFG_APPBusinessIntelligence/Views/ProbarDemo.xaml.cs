@@ -132,7 +132,11 @@ namespace TFG_APPBusinessIntelligence.Views
                 }
                 else
                 {
-                    await DisplayAlert("Error", "No se pudo generar el informe", "Aceptar");
+                    var errorDialog = NotificacionDialog.Error(
+                        "Error",
+                        "No se pudo generar el informe");
+                    await Navigation.PushModalAsync(errorDialog, animated: true);
+                    await errorDialog.MostrarAsync();
                 }
             }
             catch (Exception ex)
@@ -143,7 +147,13 @@ namespace TFG_APPBusinessIntelligence.Views
                     button.IsEnabled = true;
                     button.Text = "📄 Informe";
                 }
-                await DisplayAlert("Error", $"No se pudo abrir el informe: {ex.Message}", "Aceptar");
+
+                var errorDialog = NotificacionDialog.Error(
+                    "Error",
+                    "No se pudo abrir el informe",
+                    ex.Message);
+                await Navigation.PushModalAsync(errorDialog, animated: true);
+                await errorDialog.MostrarAsync();
             }
         }
 

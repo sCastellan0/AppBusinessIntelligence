@@ -40,45 +40,72 @@
             <!-- Panel de activación (visible cuando 2FA está desactivado) -->
             <VerticalStackLayout x:Name="PanelActivacion" Spacing="12" IsVisible="False">
 
-                <Label Text="Escanea este código QR con Google Authenticator o Microsoft Authenticator:"
-                       FontSize="13"
+                <Label Text="Introduce esta clave en Microsoft Authenticator:"
+                       FontSize="14"
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       HorizontalTextAlignment="Center"
+                       Margin="0,10,0,5"/>
+
+                <!-- Instrucciones -->
+                <Label HorizontalTextAlignment="Center"
                        TextColor="#BDC3C7"
-                       HorizontalTextAlignment="Center"/>
-
-                <!-- Código QR -->
-                <Frame BackgroundColor="White"
-                       CornerRadius="8"
-                       Padding="12"
-                       HorizontalOptions="Center">
-                    <Image x:Name="CodigoQR"
-                           WidthRequest="220"
-                           HeightRequest="220"/>
-                </Frame>
-
-                <!-- Secret manual -->
-                <Label Text="O introduce esta clave manualmente:"
                        FontSize="12"
-                       TextColor="#BDC3C7"
-                       HorizontalTextAlignment="Center"/>
+                       Margin="0,0,0,10">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="1. Abre Microsoft Authenticator&#x0a;"/>
+                            <Span Text="2. Toca + → Otra cuenta (Google, Facebook, etc.)&#x0a;"/>
+                            <Span Text="3. Introduce esta clave:"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
 
+                <!-- Secret manual con botón copiar -->
                 <Frame BackgroundColor="{DynamicResource TemaTarjeta}"
                        BorderColor="#3B82F6"
                        CornerRadius="5"
                        Padding="10">
-                    <Label x:Name="SecretLabel"
-                           FontSize="14"
-                           FontAttributes="Bold"
-                           TextColor="{DynamicResource TemaAccent}"
-                           HorizontalTextAlignment="Center"
-                           LineBreakMode="CharacterWrap"/>
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label x:Name="SecretLabel"
+                               Grid.Column="0"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="{DynamicResource TemaAccent}"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"
+                               LineBreakMode="CharacterWrap"/>
+                        <Button Grid.Column="1"
+                                Text="📋"
+                                FontSize="20"
+                                Clicked="OnCopiarSecretClicked"
+                                BackgroundColor="Transparent"
+                                TextColor="{DynamicResource TemaAccent}"
+                                WidthRequest="50"
+                                HeightRequest="40"
+                                Padding="0"/>
+                    </Grid>
                 </Frame>
 
+                <!-- Configuración -->
+                <Label HorizontalTextAlignment="Center"
+                       TextColor="#94A3B8"
+                       FontSize="11"
+                       Margin="0,0,0,5">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Configuración: "/>
+                            <Span Text="Basada en tiempo • SHA1 • 6 dígitos" FontAttributes="Bold"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+
                 <!-- Confirmación del código -->
-                <Label Text="Introduce el código de tu app para confirmar la activación:"
+                <Label Text="Introduce el código de 6 dígitos que aparece en la app:"
                        FontSize="13"
                        TextColor="White"
                        HorizontalTextAlignment="Center"
-                       Margin="0,8,0,0"/>
+                       Margin="0,15,0,0"/>
 
                 <Frame BackgroundColor="White"
                        BorderColor="#BDC3C7"
@@ -104,6 +131,7 @@
                         FontSize="14"
                         FontAttributes="Bold"
                         CornerRadius="5"
+                        Margin="0,10,0,0"
                         Clicked="OnActivarClicked"/>
             </VerticalStackLayout>
 

@@ -54,6 +54,7 @@ namespace TFG_APPBusinessIntelligence
             builder.Services.AddTransient<SesionExpiradaPopup>();
             builder.Services.AddTransient<AnalizarDataset>();
             builder.Services.AddTransient<VerInformes>();
+            builder.Services.AddTransient<ConfigurarCarpetaDialog>();
 
 #if DEBUG
             builder.Logging.AddDebug();

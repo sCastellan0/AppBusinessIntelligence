@@ -18,13 +18,15 @@
 
             <!-- Logo redondo centrado - Tap para ir a Login -->
             <Frame CornerRadius="100"
-               HasShadow="True"
+               BackgroundColor="Transparent"
+               BorderColor="Transparent"
+               HasShadow="False"
                Padding="0"
                HorizontalOptions="Center"
                WidthRequest="200"
                HeightRequest="200">
-                <Image Source="logoapp.png" 
-                   Aspect="AspectFill"
+                <Image Source="logoapp.svg" 
+                   Aspect="AspectFit"
                    HorizontalOptions="Fill"
                    VerticalOptions="Fill">
                     <Image.GestureRecognizers>

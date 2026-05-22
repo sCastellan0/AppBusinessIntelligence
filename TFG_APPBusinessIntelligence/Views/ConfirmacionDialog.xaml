@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TFG_APPBusinessIntelligence.Views.ConfirmacionDialog"
+             BackgroundColor="#80000000"
+             NavigationPage.HasNavigationBar="False">
+
+    <Grid VerticalOptions="Center" 
+          HorizontalOptions="Center"
+          Padding="20">
+
+        <Frame CornerRadius="20"
+               Padding="30"
+               HasShadow="True"
+               WidthRequest="350"
+               MaximumWidthRequest="400">
+            <Frame.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#1E293B" Offset="0.0" />
+                    <GradientStop Color="#0F172A" Offset="1.0" />
+                </LinearGradientBrush>
+            </Frame.Background>
+
+            <VerticalStackLayout Spacing="20">
+
+                <!-- Icono -->
+                <Label x:Name="IconoLabel"
+                       Text="⚠"
+                       FontSize="70"
+                       TextColor="#F59E0B"
+                       HorizontalOptions="Center"
+                       FontAttributes="Bold"/>
+
+                <!-- Título -->
+                <Label x:Name="TituloLabel"
+                       Text="Confirmar acción"
+                       FontSize="22"
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"/>
+
+                <!-- Mensaje -->
+                <Label x:Name="MensajeLabel"
+                       Text="¿Estás seguro?"
+                       TextColor="#94A3B8"
+                       FontSize="15"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"
+                       LineBreakMode="WordWrap"/>
+
+                <!-- Botones -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12" Margin="0,10,0,0">
+
+                    <!-- Botón Cancelar -->
+                    <Button Grid.Column="0"
+                            x:Name="CancelarBtn"
+                            Text="Cancelar"
+                            Clicked="OnCancelarClicked"
+                            HeightRequest="50"
+                            CornerRadius="12"
+                            FontSize="15"
+                            TextColor="White"
+                            BackgroundColor="#334155"/>
+
+                    <!-- Botón Confirmar -->
+                    <Button Grid.Column="1"
+                            x:Name="ConfirmarBtn"
+                            Text="Confirmar"
+                            Clicked="OnConfirmarClicked"
+                            HeightRequest="50"
+                            CornerRadius="12"
+                            FontSize="15"
+                            FontAttributes="Bold">
+                        <Button.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                <GradientStop Color="#DC2626" Offset="0.0" />
+                                <GradientStop Color="#EF4444" Offset="1.0" />
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+
+                </Grid>
+
+            </VerticalStackLayout>
+        </Frame>
+    </Grid>
+</ContentPage>

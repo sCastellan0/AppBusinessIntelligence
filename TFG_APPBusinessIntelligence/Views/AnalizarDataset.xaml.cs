@@ -48,9 +48,12 @@ namespace TFG_APPBusinessIntelligence.Views
                 string ext = Path.GetExtension(archivo.FileName).ToLowerInvariant();
                 if (!TiposPermitidos.Contains(ext))
                 {
-                    await DisplayAlert("Formato no soportado",
-                        $"El archivo '{archivo.FileName}' no es compatible.\nFormatos aceptados: CSV, TSV, Excel, JSON.",
-                        "Aceptar");
+                    var errorDialog = NotificacionDialog.Error(
+                        "Formato No Soportado",
+                        $"El archivo '{archivo.FileName}' no es compatible.",
+                        "Formatos aceptados: CSV, TSV, Excel (.xlsx, .xls), JSON");
+                    await Navigation.PushModalAsync(errorDialog, animated: true);
+                    await errorDialog.MostrarAsync();
                     return;
                 }
 
@@ -70,7 +73,12 @@ namespace TFG_APPBusinessIntelligence.Views
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Error", $"No se pudo seleccionar el archivo:\n{ex.Message}", "Aceptar");
+                var errorDialog = NotificacionDialog.Error(
+                    "Error",
+                    "No se pudo seleccionar el archivo",
+                    ex.Message);
+                await Navigation.PushModalAsync(errorDialog, animated: true);
+                await errorDialog.MostrarAsync();
             }
         }
 
@@ -131,7 +139,17 @@ namespace TFG_APPBusinessIntelligence.Views
 
                 // Limpiar temporal si es distinto del destino
                 if (tempPdf != rutaPdf && File.Exists(tempPdf))
-                    File.Delete(tempPdf);
+                {
+                    try
+                    {
+                        File.Delete(tempPdf);
+                    }
+                    catch (Exception deleteEx)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"No se pudo eliminar archivo temporal: {deleteEx.Message}");
+                        // No es crítico si falla, continuar
+                    }
+                }
 
                 if (token.IsCancellationRequested) return;
 
@@ -233,7 +251,12 @@ namespace TFG_APPBusinessIntelligence.Views
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Error", $"No se pudo abrir el archivo:\n{ex.Message}", "Aceptar");
+                var errorDialog = NotificacionDialog.Error(
+                    "Error al Abrir Archivo",
+                    "No se pudo abrir el archivo",
+                    ex.Message);
+                await Navigation.PushModalAsync(errorDialog, animated: true);
+                await errorDialog.MostrarAsync();
             }
         }
 
@@ -241,6 +264,19 @@ namespace TFG_APPBusinessIntelligence.Views
         {
             base.OnDisappearing();
             // No cancelamos el proceso, dejamos que continúe en segundo plano
+            // Pero limpiamos el CancellationTokenSource si existe y no hay proceso activo
+            if (_cts != null && !_procesoEnCurso)
+            {
+                try
+                {
+                    _cts?.Dispose();
+                }
+                catch { /* Ignorar errores al limpiar */ }
+                finally
+                {
+                    _cts = null;
+                }
+            }
         }
     }
 }

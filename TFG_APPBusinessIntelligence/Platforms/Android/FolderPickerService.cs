@@ -13,14 +13,28 @@ namespace TFG_APPBusinessIntelligence.Services
         {
             _tcs = new TaskCompletionSource<string?>();
 
-            var intent = new Intent(Intent.ActionOpenDocumentTree);
-            intent.AddFlags(ActivityFlags.GrantReadUriPermission | ActivityFlags.GrantWriteUriPermission | ActivityFlags.GrantPersistableUriPermission);
+            try
+            {
+                var intent = new Intent(Intent.ActionOpenDocumentTree);
+                intent.AddFlags(ActivityFlags.GrantReadUriPermission | ActivityFlags.GrantWriteUriPermission | ActivityFlags.GrantPersistableUriPermission);
 
-            var activity = Platform.CurrentActivity as MainActivity;
-            activity?.StartActivityForResult(intent, RequestCode);
+                var activity = Platform.CurrentActivity as MainActivity;
 
-            // El resultado llega por OnActivityResult en MainActivity
-            MainActivity.FolderPickerCallback = OnResult;
+                if (activity == null)
+                {
+                    _tcs.TrySetException(new InvalidOperationException("No se pudo obtener la actividad actual"));
+                    return _tcs.Task;
+                }
+
+                activity.StartActivityForResult(intent, RequestCode);
+
+                // El resultado llega por OnActivityResult en MainActivity
+                MainActivity.FolderPickerCallback = OnResult;
+            }
+            catch (Exception ex)
+            {
+                _tcs.TrySetException(ex);
+            }
 
             return _tcs.Task;
         }

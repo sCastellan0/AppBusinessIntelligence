@@ -22,9 +22,25 @@ namespace TFG_APPBusinessIntelligence.Views
 
         private async Task CargarPdfsAsync()
         {
-            var archivos = await _fileSaverService.ListPdfsAsync();
-            SinPdfsLayout.IsVisible = archivos.Count == 0;
-            ListaPdfs.ItemsSource   = archivos.Count > 0 ? archivos : null;
+            try
+            {
+                var archivos = await _fileSaverService.ListPdfsAsync();
+                SinPdfsLayout.IsVisible = archivos.Count == 0;
+                ListaPdfs.ItemsSource   = archivos.Count > 0 ? archivos : null;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[VerInformes] Error cargando PDFs: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"[VerInformes] Stack trace: {ex.StackTrace}");
+
+                // Mostrar como si no hubiera archivos para evitar crash
+                SinPdfsLayout.IsVisible = true;
+                ListaPdfs.ItemsSource = null;
+
+                await DisplayAlert("Error", 
+                    "Hubo un problema al cargar los informes. Verifica que la carpeta esté configurada correctamente en Ajustes.", 
+                    "Aceptar");
+            }
         }
 
         private async void OnPdfTapped(object sender, TappedEventArgs e)

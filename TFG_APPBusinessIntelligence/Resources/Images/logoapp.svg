@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="456" height="456" viewBox="0 0 456 456" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+	<!-- Gradiente para la flecha principal -->
+	<linearGradient id="arrowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+	  <stop offset="0%" style="stop-color:#00D9FF;stop-opacity:1"/>
+	  <stop offset="50%" style="stop-color:#00B8E6;stop-opacity:1"/>
+	  <stop offset="100%" style="stop-color:#0099CC;stop-opacity:1"/>
+	</linearGradient>
+
+	<!-- Gradiente para el globo -->
+	<radialGradient id="globeGradient" cx="50%" cy="50%" r="50%">
+	  <stop offset="0%" style="stop-color:#2E5266;stop-opacity:0.6"/>
+	  <stop offset="100%" style="stop-color:#1A3344;stop-opacity:0.3"/>
+	</radialGradient>
+
+	<!-- Resplandor -->
+	<radialGradient id="glowGradient" cx="50%" cy="50%" r="50%">
+	  <stop offset="0%" style="stop-color:#00D9FF;stop-opacity:0.3"/>
+	  <stop offset="100%" style="stop-color:#003D52;stop-opacity:0"/>
+	</radialGradient>
+
+	<!-- Filtro de sombra -->
+	<filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+	  <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
+	  <feOffset dx="2" dy="4" result="offsetblur"/>
+	  <feComponentTransfer>
+		<feFuncA type="linear" slope="0.5"/>
+	  </feComponentTransfer>
+	  <feMerge>
+		<feMergeNode/>
+		<feMergeNode in="SourceGraphic"/>
+	  </feMerge>
+	</filter>
+  </defs>
+
+  <!-- Fondo transparente -->
+  <rect width="456" height="456" fill="none"/>
+
+  <!-- Resplandor de fondo -->
+  <circle cx="228" cy="180" r="140" fill="url(#glowGradient)"/>
+
+  <!-- Globo/Esfera principal -->
+  <circle cx="228" cy="180" r="95" fill="url(#globeGradient)" opacity="0.8"/>
+  <circle cx="228" cy="180" r="95" fill="none" stroke="#3A6B82" stroke-width="3" opacity="0.7"/>
+
+  <!-- Líneas de latitud del globo -->
+  <ellipse cx="228" cy="180" rx="95" ry="28" fill="none" stroke="#3A6B82" stroke-width="2" opacity="0.6"/>
+  <ellipse cx="228" cy="180" rx="95" ry="56" fill="none" stroke="#3A6B82" stroke-width="2" opacity="0.6"/>
+
+  <!-- Líneas de longitud del globo -->
+  <ellipse cx="228" cy="180" rx="28" ry="95" fill="none" stroke="#3A6B82" stroke-width="2" opacity="0.6"/>
+  <ellipse cx="228" cy="180" rx="56" ry="95" fill="none" stroke="#3A6B82" stroke-width="2" opacity="0.6"/>
+
+  <!-- Nodos de datos conectados -->
+  <circle cx="175" cy="140" r="6" fill="#00D9FF" opacity="0.9"/>
+  <circle cx="280" cy="145" r="6" fill="#00D9FF" opacity="0.9"/>
+  <circle cx="190" cy="210" r="6" fill="#00D9FF" opacity="0.9"/>
+  <circle cx="265" cy="215" r="6" fill="#00D9FF" opacity="0.9"/>
+
+  <!-- Líneas de conexión entre nodos -->
+  <line x1="175" y1="140" x2="280" y2="145" stroke="#00B8E6" stroke-width="2.5" opacity="0.7"/>
+  <line x1="280" y1="145" x2="265" y2="215" stroke="#00B8E6" stroke-width="2.5" opacity="0.7"/>
+  <line x1="265" y1="215" x2="190" y2="210" stroke="#00B8E6" stroke-width="2.5" opacity="0.7"/>
+  <line x1="190" y1="210" x2="175" y2="140" stroke="#00B8E6" stroke-width="2.5" opacity="0.7"/>
+
+  <!-- Flecha de crecimiento (parte inferior con profundidad) -->
+  <g filter="url(#shadow)">
+	<!-- Base de la flecha (capa de profundidad) -->
+	<path d="M 130 240 L 160 215 L 180 225 L 210 195 L 240 175 L 270 165 L 295 155" 
+		  fill="none" 
+		  stroke="#004D66" 
+		  stroke-width="18" 
+		  stroke-linecap="round"
+		  stroke-linejoin="round"
+		  opacity="0.4"/>
+
+	<!-- Capa media de la flecha -->
+	<path d="M 130 240 L 160 215 L 180 225 L 210 195 L 240 175 L 270 165 L 295 155" 
+		  fill="none" 
+		  stroke="#0099CC" 
+		  stroke-width="14" 
+		  stroke-linecap="round"
+		  stroke-linejoin="round"
+		  opacity="0.8"/>
+
+	<!-- Capa superior de la flecha con gradiente -->
+	<path d="M 130 240 L 160 215 L 180 225 L 210 195 L 240 175 L 270 165 L 295 155" 
+		  fill="none" 
+		  stroke="url(#arrowGradient)" 
+		  stroke-width="10" 
+		  stroke-linecap="round"
+		  stroke-linejoin="round"/>
+
+	<!-- Punta de la flecha (sombra) -->
+	<path d="M 295 155 L 280 165 L 288 175 Z" 
+		  fill="#004D66" 
+		  opacity="0.5"/>
+
+	<!-- Punta de la flecha principal -->
+	<path d="M 295 155 L 280 165 L 288 175 Z" 
+		  fill="url(#arrowGradient)"
+		  stroke="#00D9FF"
+		  stroke-width="2"/>
+
+	<!-- Puntos brillantes en la flecha -->
+	<circle cx="180" cy="225" r="4" fill="#FFFFFF" opacity="0.9"/>
+	<circle cx="240" cy="175" r="4" fill="#FFFFFF" opacity="0.9"/>
+	<circle cx="270" cy="165" r="3" fill="#FFFFFF" opacity="0.8"/>
+  </g>
+
+  <!-- Texto ANALYSTIX con efecto 3D -->
+  <text x="228" y="345" 
+		font-family="Arial, Helvetica, sans-serif" 
+		font-size="48" 
+		font-weight="700"
+		letter-spacing="10"
+		fill="#001A24" 
+		text-anchor="middle"
+		opacity="0.3">
+	ANALYSTIX
+  </text>
+
+  <text x="228" y="343" 
+		font-family="Arial, Helvetica, sans-serif" 
+		font-size="48" 
+		font-weight="700"
+		letter-spacing="10"
+		fill="#003D52" 
+		text-anchor="middle"
+		opacity="0.5">
+	ANALYSTIX
+  </text>
+
+  <text x="228" y="340" 
+		font-family="Arial, Helvetica, sans-serif" 
+		font-size="48" 
+		font-weight="700"
+		letter-spacing="10"
+		fill="#E6F7FF" 
+		text-anchor="middle">
+	ANALYSTIX
+  </text>
+</svg>

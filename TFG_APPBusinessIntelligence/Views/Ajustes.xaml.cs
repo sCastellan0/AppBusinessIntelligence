@@ -54,7 +54,12 @@ namespace TFG_APPBusinessIntelligence.Views
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Error", $"No se pudo seleccionar la carpeta:\n{ex.Message}", "Aceptar");
+                var errorDialog = NotificacionDialog.Error(
+                    "Error",
+                    "No se pudo seleccionar la carpeta",
+                    ex.Message);
+                await Navigation.PushModalAsync(errorDialog, animated: true);
+                await errorDialog.MostrarAsync();
             }
         }
 
@@ -266,10 +271,15 @@ namespace TFG_APPBusinessIntelligence.Views
                     _cargandoAlmacen = false;
                     ActualizarEtiquetaAlmacen(false);
 
-                    bool irAjustes = await DisplayAlert(
-                        "Permiso necesario",
+                    var confirmDialog = ConfirmacionDialog.Crear(
+                        "Permiso Necesario",
                         "El permiso de almacenamiento fue denegado. Debes activarlo manualmente desde los ajustes del sistema.",
-                        "Abrir ajustes", "Cancelar");
+                        "Abrir Ajustes",
+                        "Cancelar",
+                        esPeligroso: false);
+
+                    await Navigation.PushModalAsync(confirmDialog, animated: true);
+                    bool irAjustes = await confirmDialog.MostrarAsync();
 
                     if (irAjustes)
                         AbrirAjustesSistema();

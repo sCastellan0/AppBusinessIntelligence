@@ -8,6 +8,7 @@ namespace TFG_APPBusinessIntelligence.Views
         private readonly DatabaseService _databaseService;
         private readonly TotpService _totpService;
         private readonly ThemeService _themeService;
+        private readonly IServiceProvider _serviceProvider;
 
         private readonly DatasetAnalyzerService _datasetAnalyzerService;
         private readonly GeneradorPdfService    _generadorPdfService;
@@ -16,8 +17,9 @@ namespace TFG_APPBusinessIntelligence.Views
 
         private const string PrefCarpeta = "carpeta_informes";
         private string? _carpetaInformes;
+        private bool _dialogoMostrado = false;
 
-        public Dashboard(FirebaseAuthService firebaseAuthService, DatabaseService databaseService, TotpService totpService, ThemeService themeService, DatasetAnalyzerService datasetAnalyzerService, GeneradorPdfService generadorPdfService, IFolderPickerService folderPickerService, IFileSaverService fileSaverService)
+        public Dashboard(FirebaseAuthService firebaseAuthService, DatabaseService databaseService, TotpService totpService, ThemeService themeService, DatasetAnalyzerService datasetAnalyzerService, GeneradorPdfService generadorPdfService, IFolderPickerService folderPickerService, IFileSaverService fileSaverService, IServiceProvider serviceProvider)
         {
             InitializeComponent();
             _firebaseAuthService = firebaseAuthService;
@@ -28,22 +30,63 @@ namespace TFG_APPBusinessIntelligence.Views
             _generadorPdfService    = generadorPdfService;
             _folderPickerService    = folderPickerService;
             _fileSaverService       = fileSaverService;
+            _serviceProvider        = serviceProvider;
         }
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
             _carpetaInformes = Preferences.Default.Get(PrefCarpeta, string.Empty);
+
+            // Verificar si debe mostrarse el diálogo de configuración de carpeta
+            if (!_dialogoMostrado && ConfigurarCarpetaDialog.DebesMostrarDialogo())
+            {
+                _dialogoMostrado = true;
+                try
+                {
+                    await MostrarDialogoConfiguracionCarpeta();
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Error mostrando diálogo de carpeta: {ex.Message}");
+                    // No propagar la excepción para evitar cierre inesperado
+                }
+            }
+        }
+
+        private async Task MostrarDialogoConfiguracionCarpeta()
+        {
+            try
+            {
+                var dialogo = _serviceProvider.GetRequiredService<ConfigurarCarpetaDialog>();
+                await Navigation.PushModalAsync(dialogo, animated: true);
+                var resultado = await dialogo.MostrarAsync();
+
+                // Actualizar la carpeta si se configuró
+                if (resultado)
+                {
+                    _carpetaInformes = Preferences.Default.Get(PrefCarpeta, string.Empty);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error mostrando diálogo de carpeta: {ex.Message}");
+            }
         }
 
         private async void OnVerDatosClicked(object? sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(_carpetaInformes))
             {
-                bool irAjustes = await DisplayAlert(
-                    "Carpeta no configurada",
-                    "Primero configura la carpeta de informes en Ajustes.",
-                    "Ir a Ajustes", "Cancelar");
+                var confirmDialog = ConfirmacionDialog.Crear(
+                    "Carpeta No Configurada",
+                    "Para ver los informes, primero necesitas configurar la carpeta donde se guardan.",
+                    "Ir a Ajustes",
+                    "Cancelar",
+                    esPeligroso: false);
+
+                await Navigation.PushModalAsync(confirmDialog, animated: true);
+                bool irAjustes = await confirmDialog.MostrarAsync();
 
                 if (irAjustes)
                 {
