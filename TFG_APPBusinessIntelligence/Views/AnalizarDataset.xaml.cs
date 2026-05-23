@@ -52,7 +52,7 @@ namespace TFG_APPBusinessIntelligence.Views
                         "Formato No Soportado",
                         $"El archivo '{archivo.FileName}' no es compatible.",
                         "Formatos aceptados: CSV, TSV, Excel (.xlsx, .xls), JSON");
-                    await Navigation.PushModalAsync(errorDialog, animated: true);
+                   
                     await errorDialog.MostrarAsync();
                     return;
                 }
@@ -77,7 +77,7 @@ namespace TFG_APPBusinessIntelligence.Views
                     "Error",
                     "No se pudo seleccionar el archivo",
                     ex.Message);
-                await Navigation.PushModalAsync(errorDialog, animated: true);
+                
                 await errorDialog.MostrarAsync();
             }
         }
@@ -255,7 +255,7 @@ namespace TFG_APPBusinessIntelligence.Views
                     "Error al Abrir Archivo",
                     "No se pudo abrir el archivo",
                     ex.Message);
-                await Navigation.PushModalAsync(errorDialog, animated: true);
+               
                 await errorDialog.MostrarAsync();
             }
         }

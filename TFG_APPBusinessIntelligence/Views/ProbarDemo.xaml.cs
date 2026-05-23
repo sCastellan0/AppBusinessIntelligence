@@ -135,7 +135,7 @@ namespace TFG_APPBusinessIntelligence.Views
                     var errorDialog = NotificacionDialog.Error(
                         "Error",
                         "No se pudo generar el informe");
-                    await Navigation.PushModalAsync(errorDialog, animated: true);
+                    
                     await errorDialog.MostrarAsync();
                 }
             }
@@ -152,7 +152,7 @@ namespace TFG_APPBusinessIntelligence.Views
                     "Error",
                     "No se pudo abrir el informe",
                     ex.Message);
-                await Navigation.PushModalAsync(errorDialog, animated: true);
+               
                 await errorDialog.MostrarAsync();
             }
         }

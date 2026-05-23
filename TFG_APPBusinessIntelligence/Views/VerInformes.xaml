@@ -25,16 +25,18 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Column="0"
-                   Text="←"
-                   FontSize="28"
-                   TextColor="White"
-                   VerticalOptions="Center"
-                   Margin="0,0,12,0">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnVolverTapped" />
-                </Label.GestureRecognizers>
-            </Label>
+            <!-- BOTÓN DE VOLVER (CORREGIDO) -->
+            <Button Grid.Column="0"
+                    Text="←"
+                    Clicked="OnVolverTapped"
+                    BackgroundColor="Transparent"
+                    TextColor="White"
+                    FontSize="28"
+                    Padding="0"
+                    BorderWidth="0"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Center"
+                    Margin="0,0,12,0" />
 
             <Label Grid.Column="1"
                    Text="📄 Informes PDF"
@@ -89,6 +91,7 @@
                                                FontSize="11"
                                                TextColor="#94A3B8" />
                                     </VerticalStackLayout>
+
                                     <!-- Botón abrir -->
                                     <Label Grid.Column="2"
                                            Text="▶"
@@ -100,6 +103,7 @@
                                                                   Tapped="OnPdfTapped" />
                                         </Label.GestureRecognizers>
                                     </Label>
+
                                     <!-- Botón eliminar -->
                                     <Label Grid.Column="3"
                                            Text="🗑"
@@ -135,10 +139,9 @@
                     HorizontalOptions="Center"
                     VerticalOptions="Center"
                     WidthRequest="320"
-                    Shadow="{Shadow Color=#33000000, Offset='0,8', Radius=20}">
+                    Shadow="{Shadow Brush=#33000000, Offset='0,8', Radius=20}">
                 <VerticalStackLayout Spacing="16">
 
-                    <!-- Icono -->
                     <Border BackgroundColor="#FEE2E2"
                             StrokeShape="RoundRectangle 40"
                             StrokeThickness="0"
@@ -150,14 +153,12 @@
                                VerticalOptions="Center" />
                     </Border>
 
-                    <!-- Título -->
                     <Label Text="Eliminar informe"
                            FontSize="17"
                            FontAttributes="Bold"
                            TextColor="White"
                            HorizontalOptions="Center" />
 
-                    <!-- Mensaje -->
                     <Label x:Name="OverlayMensaje"
                            FontSize="13"
                            TextColor="#94A3B8"
@@ -165,10 +166,8 @@
                            HorizontalTextAlignment="Center"
                            LineBreakMode="WordWrap" />
 
-                    <!-- Botones -->
                     <Grid ColumnDefinitions="*,*" ColumnSpacing="12" Margin="0,6,0,0">
 
-                        <!-- Cancelar -->
                         <Border Grid.Column="0"
                                 BackgroundColor="Transparent"
                                 StrokeShape="RoundRectangle 10"
@@ -184,12 +183,8 @@
                                     <TapGestureRecognizer Tapped="OnOverlayCancelar" />
                                 </Label.GestureRecognizers>
                             </Label>
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="OnOverlayCancelar" />
-                            </Border.GestureRecognizers>
                         </Border>
 
-                        <!-- Eliminar -->
                         <Border Grid.Column="1"
                                 BackgroundColor="#EF4444"
                                 StrokeShape="RoundRectangle 10"
@@ -204,9 +199,6 @@
                                     <TapGestureRecognizer Tapped="OnOverlayConfirmar" />
                                 </Label.GestureRecognizers>
                             </Label>
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="OnOverlayConfirmar" />
-                            </Border.GestureRecognizers>
                         </Border>
 
                     </Grid>

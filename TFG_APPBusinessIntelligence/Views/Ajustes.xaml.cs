@@ -58,7 +58,7 @@ namespace TFG_APPBusinessIntelligence.Views
                     "Error",
                     "No se pudo seleccionar la carpeta",
                     ex.Message);
-                await Navigation.PushModalAsync(errorDialog, animated: true);
+                
                 await errorDialog.MostrarAsync();
             }
         }

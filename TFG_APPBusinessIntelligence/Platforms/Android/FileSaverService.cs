@@ -152,9 +152,18 @@ namespace TFG_APPBusinessIntelligence.Services
 
                 return Task.FromResult(lista.OrderByDescending(x => x.Detalle).ToList());
             }
-            catch
+            catch (Exception ex)
             {
-                return Task.FromResult(lista);
+                System.Diagnostics.Debug.WriteLine("════════ ERROR EN ListPdfsAsync ════════");
+                System.Diagnostics.Debug.WriteLine(ex.GetType().Name);
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+                System.Diagnostics.Debug.WriteLine(ex.StackTrace);
+                if (ex.InnerException != null)
+                    System.Diagnostics.Debug.WriteLine("INNER: " + ex.InnerException.Message);
+                System.Diagnostics.Debug.WriteLine("═══════════════════════════════════════");
+
+                // IMPORTANTE: re-lanzar para que lo capture CargarPdfsAsync
+                throw;
             }
         }
         // ── Verificar Permiso Persistente ─────────────────────────────────────

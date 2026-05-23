@@ -91,7 +91,7 @@ namespace TFG_APPBusinessIntelligence.Views
                 var errorDialog = NotificacionDialog.Error(
                     "Error",
                     "Introduce el código de 6 dígitos de tu app");
-                await Navigation.PushModalAsync(errorDialog, animated: true);
+                
                 await errorDialog.MostrarAsync();
                 return;
             }
@@ -101,7 +101,7 @@ namespace TFG_APPBusinessIntelligence.Views
                 var errorDialog = NotificacionDialog.Error(
                     "Error",
                     "No se generó el secret. Recarga la pantalla.");
-                await Navigation.PushModalAsync(errorDialog, animated: true);
+                
                 await errorDialog.MostrarAsync();
                 return;
             }
@@ -132,7 +132,7 @@ namespace TFG_APPBusinessIntelligence.Views
                     "Código Incorrecto",
                     "El código no coincide.",
                     "Asegúrate de haber escaneado el QR correctamente y que el reloj de tu dispositivo esté sincronizado.");
-                await Navigation.PushModalAsync(errorDialog, animated: true);
+               
                 await errorDialog.MostrarAsync();
                 CodigoConfirmacionEntry.Text = "";
                 return;
@@ -146,7 +146,7 @@ namespace TFG_APPBusinessIntelligence.Views
                 var errorDialog = NotificacionDialog.Error(
                     "Error",
                     "No se encontró el usuario en la base de datos local");
-                await Navigation.PushModalAsync(errorDialog, animated: true);
+              
                 await errorDialog.MostrarAsync();
                 return;
             }
@@ -174,7 +174,6 @@ namespace TFG_APPBusinessIntelligence.Views
                 var errorDialog = NotificacionDialog.Error(
                     "Error",
                     "Introduce el código de 6 dígitos para confirmar");
-                await Navigation.PushModalAsync(errorDialog, animated: true);
                 await errorDialog.MostrarAsync();
                 return;
             }
@@ -187,7 +186,6 @@ namespace TFG_APPBusinessIntelligence.Views
                 var errorDialog = NotificacionDialog.Error(
                     "Error",
                     "No se encontró la configuración 2FA");
-                await Navigation.PushModalAsync(errorDialog, animated: true);
                 await errorDialog.MostrarAsync();
                 return;
             }
@@ -199,7 +197,6 @@ namespace TFG_APPBusinessIntelligence.Views
                 var errorDialog = NotificacionDialog.Error(
                     "Código Incorrecto",
                     "El código no es válido.");
-                await Navigation.PushModalAsync(errorDialog, animated: true);
                 await errorDialog.MostrarAsync();
                 CodigoDesactivarEntry.Text = "";
                 return;

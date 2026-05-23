@@ -1,4 +1,5 @@
 using TFG_APPBusinessIntelligence.Services;
+using Microsoft.Maui.ApplicationModel;
 
 namespace TFG_APPBusinessIntelligence.Views
 {
@@ -29,35 +30,26 @@ namespace TFG_APPBusinessIntelligence.Views
                 System.Diagnostics.Debug.WriteLine($"[VerInformes] PDFs encontrados: {archivos.Count}");
 
                 SinPdfsLayout.IsVisible = archivos.Count == 0;
-                ListaPdfs.ItemsSource   = archivos.Count > 0 ? archivos : null;
+                ListaPdfs.ItemsSource = archivos.Count > 0 ? archivos : null;
 
                 System.Diagnostics.Debug.WriteLine("[VerInformes] Carga completada exitosamente");
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"[VerInformes] ════════════ ERROR ════════════");
-                System.Diagnostics.Debug.WriteLine($"[VerInformes] Mensaje: {ex.Message}");
-                System.Diagnostics.Debug.WriteLine($"[VerInformes] Tipo: {ex.GetType().Name}");
-                System.Diagnostics.Debug.WriteLine($"[VerInformes] Stack trace:");
-                System.Diagnostics.Debug.WriteLine(ex.StackTrace);
-                if (ex.InnerException != null)
-                {
-                    System.Diagnostics.Debug.WriteLine($"[VerInformes] Inner exception: {ex.InnerException.Message}");
-                }
-                System.Diagnostics.Debug.WriteLine($"[VerInformes] ════════════════════════════════");
+                System.Diagnostics.Debug.WriteLine($"[VerInformes] ERROR: {ex.Message}");
 
                 // Mostrar como si no hubiera archivos para evitar crash
                 SinPdfsLayout.IsVisible = true;
                 ListaPdfs.ItemsSource = null;
 
-                // Mostrar error detallado al usuario
-                var errorDialog = NotificacionDialog.Error(
-                    "Error al cargar informes",
-                    "No se pudieron cargar los informes. Verifica la configuración de la carpeta.",
-                    $"Detalles técnicos:\n{ex.GetType().Name}\n{ex.Message}\n\nRevisa los logs para más información.");
-
-                await Navigation.PushModalAsync(errorDialog, animated: true);
-                await errorDialog.MostrarAsync();
+                // SOLUCIÓN: Usar el MainThread para lanzar la alerta de forma segura sin crashear OnAppearing
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+                    await Application.Current.MainPage.DisplayAlert(
+                        "Error de acceso",
+                        "Android bloquea el acceso a la raíz del teléfono por seguridad. Ve a Ajustes y selecciona una subcarpeta (ej. Documentos o Descargas).",
+                        "Entendido");
+                });
             }
         }
 
@@ -71,7 +63,6 @@ namespace TFG_APPBusinessIntelligence.Views
         {
             if (e.Parameter is not PdfEntry item) return;
 
-            // Mostrar overlay personalizado
             string nombreCorto = item.Nombre.Length > 40
                 ? item.Nombre[..40] + "..."
                 : item.Nombre;
@@ -95,7 +86,12 @@ namespace TFG_APPBusinessIntelligence.Views
             if (ok)
                 await CargarPdfsAsync();
             else
-                await DisplayAlert("Error", "No se pudo eliminar el informe.", "Aceptar");
+            {
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "No se pudo eliminar el informe.", "Aceptar");
+                });
+            }
         }
 
         private void OnOverlayCancelar(object sender, TappedEventArgs e)
@@ -104,7 +100,7 @@ namespace TFG_APPBusinessIntelligence.Views
         private void OnOverlayConfirmar(object sender, TappedEventArgs e)
             => _tcsEliminar?.TrySetResult(true);
 
-        private async void OnVolverTapped(object sender, TappedEventArgs e)
+        private async void OnVolverTapped(object sender, EventArgs e)
             => await Navigation.PopAsync();
     }
 }
