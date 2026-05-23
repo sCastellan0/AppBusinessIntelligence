@@ -26,6 +26,7 @@
 		       <MauiXaml Update="MyPage.xaml" Inflator="Default" /> (reverts to defaults: Runtime for Debug, XamlC for Release)
 		       <MauiXaml Update="MyPage.xaml" Inflator="Runtime" /> (force runtime inflation) -->
 		<MauiXamlInflator>SourceGen</MauiXamlInflator>
+		<MauiLinkMode>None</MauiLinkMode>
 
 		<!-- Display name -->
 		<ApplicationTitle>TFG_APPBusinessIntelligence</ApplicationTitle>
