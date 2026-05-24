@@ -78,8 +78,8 @@ Puedes descargar la última versión de Analystix desde:
 
 ### Instalación en Android
 
-1. Copia el APK al dispositivo o escanea el código QR (si lo has incluido en el TFG).
-2. Activa la instalación desde orígenes desconocidos (si es necesario).
+1. Copia el APK al dispositivo o escanea el código QR .
+2. Activa la instalación desde orígenes desconocidos.
 3. Abre el archivo APK y sigue los pasos del instalador.
 ## Modo demo
 
